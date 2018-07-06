@@ -38,11 +38,11 @@
             </objects>
             <point key="canvasLocation" x="776.79999999999995" y="-580.65967016491754"/>
         </scene>
-        <!--View Controller-->
+        <!--Twitter Feeds-->
         <scene sceneID="VAS-MS-L5P">
             <objects>
-                <viewController storyboardIdentifier="home" id="tLh-HC-LzD" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="P1s-co-0B2" customClass="HomeController">
+                <viewController storyboardIdentifier="home" id="tLh-HC-LzD" customClass="TwitterFeeds" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="P1s-co-0B2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
