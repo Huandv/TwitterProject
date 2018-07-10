@@ -10,17 +10,23 @@ import UIKit
 import TwitterKit
 
 class ViewController: UIViewController {
-    
-    @IBOutlet weak var name: UILabel!
     var logInButton : TWTRLogInButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
+        if let _ = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController
+            self.navigationController?.pushViewController(vc, animated: false)
+        } else {
+            login()
+        }
+    }
+    
+    private func login () {
         logInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (session != nil) {
                 print("signed in as \(String(describing: session?.userName))");
-                self.name.text = session?.userName
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController
                 self.navigationController?.pushViewController(vc, animated: false)
