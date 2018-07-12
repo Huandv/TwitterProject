@@ -1,8 +1,8 @@
 //
-//  TwitterHome.swift
+//  TwitterFeeds.swift
 //  TwitterProject
 //
-//  Created by Huan CAO on 7/11/18.
+//  Created by Huan CAO on 7/6/18.
 //  Copyright © 2018 Huan CAO. All rights reserved.
 //
 
@@ -11,17 +11,19 @@ import UIKit
 import TwitterKit
 import Alamofire
 import AlamofireImage
+import Unbox
 
-class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentationControllerDelegate {
+class Home : UIViewController, UITableViewDataSource {
+    var tweetsData = [[String : String]]()
     let vc = TwitterRestApi()
+    let url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
     var refreshControl = UIRefreshControl()
-    let url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         vc.getFeed(requestUrl: url, tableView: self.tableView)
         
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -29,17 +31,20 @@ class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentati
         
         //create button in rightbar
         let rightButtonItem = UIBarButtonItem.init(
-            title: "Tweet",
+            title: "User",
             style: .done,
             target: self,
-            action: #selector(tweet(sender:))
+            action: #selector(userView(sender:))
         )
         
         if self.navigationController != nil {
             self.navigationItem.rightBarButtonItem = rightButtonItem
         }
-        
-        //pull-to-refresh
+
+        refresh()
+    }
+    
+    func refresh() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControlEvents.valueChanged)
         tableView.addSubview(refreshControl)
@@ -53,14 +58,15 @@ class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentati
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! TableViewCell
-        cell.usernameLabel.text = vc.tweetsData[indexPath.row]["name"]
-        cell.usertweetsLabel.text = vc.tweetsData[indexPath.row]["text"]
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
+        cell.label.text = vc.tweetsData[indexPath.row]["text"]
+        cell.name.text = vc.tweetsData[indexPath.row]["name"]
+        
         if let url = vc.tweetsData[indexPath.row]["url"] {
             let urlImg = NSURL(string: url)
-            cell.userImgView.af_setImage(withURL: urlImg! as URL)
+            cell.imgView.af_setImage(withURL: urlImg! as URL)
         } else {
-            cell.userImgView.image = nil
+            cell.imgView.image = nil
         }
         return cell
     }
@@ -69,11 +75,10 @@ class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentati
         return vc.tweetsData.count
     }
     
-    @objc func tweet(sender: UIBarButtonItem) {
+    @objc func userView(sender: UIBarButtonItem) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let present: UIViewController = storyboard.instantiateViewController(withIdentifier: "child")
-        self.navigationController?.present(present, animated: true, completion: nil)
-        
+        let vc = storyboard.instantiateViewController(withIdentifier: "user") as UIViewController
+        self.navigationController?.pushViewController(vc, animated: false)
     }
 }
 
