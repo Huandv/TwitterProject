@@ -10,14 +10,10 @@ import Foundation
 import UIKit
 import TwitterKit
 
-class TwitterRestApi: UIViewController {
+class TwitterRestApi {
     var tweetsData = [[String : String]]()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    func getFeed(requestUrl: String, tableView: UITableView) {
+    func getFeed(requestUrl: String, completion: @escaping (String?) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
             let client = TWTRAPIClient(userID: userID)
             let params = ["user_id": userID, "count": "50"]
@@ -28,6 +24,7 @@ class TwitterRestApi: UIViewController {
             client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
                 if connectionError != nil {
                     print("Error: \(String(describing: connectionError))")
+                    completion("nil")
                 }
                 do {
                     let json = try JSONSerialization.jsonObject(with: data!, options: [])
@@ -47,7 +44,7 @@ class TwitterRestApi: UIViewController {
                         }
                         self.tweetsData.append(termArr)
                     }
-                    tableView.reloadData()
+                    completion("OK")
                 } catch let jsonError as NSError {
                     print("json error: \(jsonError.localizedDescription)")
                 }
@@ -55,13 +52,37 @@ class TwitterRestApi: UIViewController {
         }
     }
     
-    func postTweet() {
-//        let client = TWTRAPIClient()
-//        let params = ["status": "viet nam vo dich"]
-//        let url = "https://api.twitter.com/1.1/statuses/update.json"
-//        var clientError : NSError?
-//        
-//        let request = client.urlRequest(withMethod: "POST", urlString: url, parameters: params, error: &clientError)
+    func postIMG(image: Data?, completion: @escaping (String?) -> () ) {
+        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let client = TWTRAPIClient(userID: userID)
+            if let image = image {
+                client.uploadMedia(image, contentType: "image/jpeg") { (string, error) in
+                    if error != nil {
+                        completion("nil")
+                    } else {
+                        let result = string
+                        completion(result)
+                    }
+                }
+            }
+        }
+    }
+    
+    func postTweet(params: [String: String], url: String, completion: @escaping (Error?) -> Void) {
+        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let client = TWTRAPIClient(userID: userID)
+            var clientError : NSError?
+            
+            let request = client.urlRequest(withMethod: "POST", urlString: url, parameters: params, error: &clientError)
+            
+            client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+                if connectionError != nil {
+                    completion(connectionError)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
     }
 }
 

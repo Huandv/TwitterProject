@@ -12,18 +12,24 @@ import TwitterKit
 import Alamofire
 import AlamofireImage
 
-class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentationControllerDelegate {
+private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
+
+class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAdaptivePresentationControllerDelegate {
     let vc = TwitterRestApi()
-    var refreshControl = UIRefreshControl()
-    let url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
+    private var refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        vc.getFeed(requestUrl: url, tableView: self.tableView)
-        
+        vc.getFeed(requestUrl: userTimelineRestUrl) { (result) in
+            if let _ = result {
+                self.tableView.reloadData()
+            } else {
+                //error
+            }
+        }
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
         
@@ -46,8 +52,14 @@ class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentati
     }
     
     @objc func refresh(sender:AnyObject) {
-        vc.tweetsData = [[String: String]]()
-        vc.getFeed(requestUrl: url, tableView: self.tableView)
+        vc.tweetsData.removeAll()
+        vc.getFeed(requestUrl: userTimelineRestUrl) { (result) in
+            if let _ = result {
+                self.tableView.reloadData()
+            } else {
+                //error
+            }
+        }
         self.tableView.reloadData()
         refreshControl.endRefreshing()
     }
@@ -57,8 +69,8 @@ class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentati
         cell.usernameLabel.text = vc.tweetsData[indexPath.row]["name"]
         cell.usertweetsLabel.text = vc.tweetsData[indexPath.row]["text"]
         if let url = vc.tweetsData[indexPath.row]["url"] {
-            let urlImg = NSURL(string: url)
-            cell.userImgView.af_setImage(withURL: urlImg! as URL)
+            let imgUrl = NSURL(string: url)
+            cell.userImgView.af_setImage(withURL: imgUrl! as URL)
         } else {
             cell.userImgView.image = nil
         }
@@ -70,9 +82,8 @@ class TwitterUser: UIViewController, UITableViewDataSource, UIAdaptivePresentati
     }
     
     @objc func tweet(sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let present: UIViewController = storyboard.instantiateViewController(withIdentifier: "child")
-        self.navigationController?.present(present, animated: true, completion: nil)
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "postTweetViewController") as! UIViewController
+        self.present(viewController, animated: true, completion: nil)
         
     }
 }

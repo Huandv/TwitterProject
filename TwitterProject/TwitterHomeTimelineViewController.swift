@@ -13,18 +13,24 @@ import Alamofire
 import AlamofireImage
 import Unbox
 
-class Home : UIViewController, UITableViewDataSource {
-    var tweetsData = [[String : String]]()
-    let vc = TwitterRestApi()
-    let url = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-    var refreshControl = UIRefreshControl()
+private let homeTimelineRestUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
+
+class TwitterHomeTimelineViewController : UIViewController, UITableViewDataSource {
+    private var tweetsData = [[String : String]]()
+    private let vc = TwitterRestApi()
+    private var refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        vc.getFeed(requestUrl: url, tableView: self.tableView)
+        vc.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
+            if let _ = result {
+                self.tableView.reloadData()
+            } else {
+                //error
+            }
+        }
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
@@ -51,8 +57,14 @@ class Home : UIViewController, UITableViewDataSource {
     }
     
     @objc func refresh(sender:AnyObject) {
-        vc.tweetsData = [[String: String]]()
-        vc.getFeed(requestUrl: url, tableView: self.tableView)
+        vc.tweetsData.removeAll()
+        vc.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
+            if let _ = result {
+                self.tableView.reloadData()
+            } else {
+                //error
+            }
+        }
         self.tableView.reloadData()
         refreshControl.endRefreshing()
     }
@@ -63,8 +75,8 @@ class Home : UIViewController, UITableViewDataSource {
         cell.name.text = vc.tweetsData[indexPath.row]["name"]
         
         if let url = vc.tweetsData[indexPath.row]["url"] {
-            let urlImg = NSURL(string: url)
-            cell.imgView.af_setImage(withURL: urlImg! as URL)
+            let imgUrl = NSURL(string: url)
+            cell.imgView.af_setImage(withURL: imgUrl! as URL)
         } else {
             cell.imgView.image = nil
         }
@@ -76,11 +88,10 @@ class Home : UIViewController, UITableViewDataSource {
     }
     
     @objc func userView(sender: UIBarButtonItem) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "user") as UIViewController
-        self.navigationController?.pushViewController(vc, animated: false)
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "user") as! UIViewController
+        self.navigationController?.pushViewController(viewController, animated: false)
     }
+    
 }
-
 
 

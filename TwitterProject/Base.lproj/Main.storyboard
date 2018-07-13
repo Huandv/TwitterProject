@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eDF-0o-Wsh">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -16,7 +16,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -30,33 +30,33 @@
         <!--Home-->
         <scene sceneID="VAS-MS-L5P">
             <objects>
-                <viewController storyboardIdentifier="home" title="Home" id="tLh-HC-LzD" customClass="Home" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="home" title="Home" id="tLh-HC-LzD" customClass="TwitterHomeTimelineViewController" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="P1s-co-0B2">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="hM9-R6-2B3">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="306" id="Oan-Qp-AEI" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="306"/>
+                                        <rect key="frame" x="0.0" y="28" width="320" height="306"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oan-Qp-AEI" id="Ewd-xf-sm2">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="305.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="305.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Xq-4V-BKM">
-                                                    <rect key="frame" x="25" y="16" width="135" height="19.5"/>
+                                                    <rect key="frame" x="25" y="16" width="80" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LuK-y0-LBs">
-                                                    <rect key="frame" x="55" y="93" width="265" height="192"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LuK-y0-LBs">
+                                                    <rect key="frame" x="25" y="93" width="270" height="192"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9iA-13-0WE">
-                                                    <rect key="frame" x="25" y="45.5" width="325" height="14.5"/>
+                                                    <rect key="frame" x="25" y="45.5" width="270" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -67,11 +67,11 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="8Xq-4V-BKM" secondAttribute="trailing" constant="200" id="JcY-v5-qOn"/>
                                                 <constraint firstItem="LuK-y0-LBs" firstAttribute="top" secondItem="9iA-13-0WE" secondAttribute="bottom" constant="33" id="Rfb-PY-zMt"/>
                                                 <constraint firstItem="9iA-13-0WE" firstAttribute="leading" secondItem="Ewd-xf-sm2" secondAttribute="leadingMargin" constant="10" id="S07-gK-Bms"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="LuK-y0-LBs" secondAttribute="trailing" constant="40" id="bB0-Pp-aSM"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="LuK-y0-LBs" secondAttribute="trailing" constant="10" id="bB0-Pp-aSM"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="LuK-y0-LBs" secondAttribute="bottom" constant="10" id="bci-0s-M1h"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="9iA-13-0WE" secondAttribute="trailing" constant="10" id="cc5-tu-uUo"/>
                                                 <constraint firstItem="9iA-13-0WE" firstAttribute="top" secondItem="8Xq-4V-BKM" secondAttribute="bottom" constant="10" id="f1h-BB-WSs"/>
-                                                <constraint firstItem="LuK-y0-LBs" firstAttribute="leading" secondItem="Ewd-xf-sm2" secondAttribute="leadingMargin" constant="40" id="kXH-ar-Mgl"/>
+                                                <constraint firstItem="LuK-y0-LBs" firstAttribute="leading" secondItem="Ewd-xf-sm2" secondAttribute="leadingMargin" constant="10" id="kXH-ar-Mgl"/>
                                                 <constraint firstItem="8Xq-4V-BKM" firstAttribute="top" secondItem="Ewd-xf-sm2" secondAttribute="topMargin" constant="5" id="op6-fU-GjF"/>
                                                 <constraint firstItem="LuK-y0-LBs" firstAttribute="top" secondItem="9iA-13-0WE" secondAttribute="bottom" constant="33" id="sAa-yd-L8j"/>
                                                 <constraint firstItem="9iA-13-0WE" firstAttribute="top" secondItem="8Xq-4V-BKM" secondAttribute="bottom" constant="10" id="x7t-r8-gPN"/>
@@ -109,9 +109,9 @@
         <!--User Timeline-->
         <scene sceneID="FZH-rr-erE">
             <objects>
-                <viewController storyboardIdentifier="user" title="User Timeline" id="6SK-L8-yL1" customClass="TwitterUser" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="user" title="User Timeline" id="6SK-L8-yL1" customClass="TwitterUserViewController" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="chV-wu-uyH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEZ-W1-ani">
@@ -121,36 +121,35 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nER-9R-k7N">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nER-9R-k7N">
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell1" rowHeight="237" id="u0O-R3-37t" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="237"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell1" rowHeight="317" id="u0O-R3-37t" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="317"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u0O-R3-37t" id="DsL-LA-SMC">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="236.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="316.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="text" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbR-5L-gG7">
-                                                    <rect key="frame" x="25" y="50.5" width="325" height="14.5"/>
+                                                    <rect key="frame" x="25" y="45.5" width="270" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uet-Zo-Q9E">
-                                                    <rect key="frame" x="25" y="75" width="325" height="141"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uet-Zo-Q9E">
+                                                    <rect key="frame" x="25" y="68" width="270" height="228"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oKy-b8-d2P">
-                                                    <rect key="frame" x="25" y="21" width="135" height="19.5"/>
+                                                    <rect key="frame" x="25" y="16" width="80" height="19.5"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="oKy-b8-d2P" firstAttribute="top" secondItem="DsL-LA-SMC" secondAttribute="topMargin" constant="10" id="83M-B6-MOC"/>
+                                                <constraint firstItem="oKy-b8-d2P" firstAttribute="top" secondItem="DsL-LA-SMC" secondAttribute="topMargin" constant="5" id="83M-B6-MOC"/>
                                                 <constraint firstItem="uet-Zo-Q9E" firstAttribute="top" secondItem="sbR-5L-gG7" secondAttribute="bottom" constant="10" id="B2f-xR-rMp"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="uet-Zo-Q9E" secondAttribute="trailing" constant="10" id="MYn-c8-eIf"/>
                                                 <constraint firstItem="sbR-5L-gG7" firstAttribute="top" secondItem="oKy-b8-d2P" secondAttribute="bottom" constant="10" id="RyB-0x-iEr"/>
@@ -177,6 +176,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="nER-9R-k7N" firstAttribute="bottom" secondItem="MWl-9q-RFi" secondAttribute="bottom" id="Fh7-cv-frh"/>
+                            <constraint firstItem="nER-9R-k7N" firstAttribute="top" secondItem="MWl-9q-RFi" secondAttribute="top" id="VC0-2o-Cpy"/>
+                            <constraint firstItem="nER-9R-k7N" firstAttribute="leading" secondItem="MWl-9q-RFi" secondAttribute="leading" id="joy-ZP-CLq"/>
+                            <constraint firstItem="nER-9R-k7N" firstAttribute="trailing" secondItem="MWl-9q-RFi" secondAttribute="trailing" id="x9J-cQ-VRX"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="MWl-9q-RFi"/>
                     </view>
                     <connections>
@@ -185,18 +190,47 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W6Q-0L-ETR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3309.5999999999999" y="-581.55922038980509"/>
+            <point key="canvasLocation" x="3283" y="-581"/>
         </scene>
-        <!--Create Tweets-->
+        <!--Create Tweets View Controller-->
         <scene sceneID="Wqv-Li-HKF">
             <objects>
-                <viewController storyboardIdentifier="child" id="fF6-ng-LEQ" customClass="CreateTweets" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="postTweetViewController" id="fF6-ng-LEQ" customClass="CreateTweetsViewController" customModule="TwitterProject" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hq3-bn-UTz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="What's happening?" translatesAutoresizingMaskIntoConstraints="NO" id="ZV1-B7-uN2">
+                                <rect key="frame" x="50" y="86" width="215" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Gk-KB-Hjc">
+                                <rect key="frame" x="245" y="30" width="59" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Tweet"/>
+                                <connections>
+                                    <action selector="tweets:" destination="fF6-ng-LEQ" eventType="touchUpInside" id="k7Y-gz-XZw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIe-qp-BR3">
+                                <rect key="frame" x="133" y="176" width="50" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="image">
+                                    <color key="titleColor" red="0.46557635635511119" green="0.50255710168316603" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="uploadImg:" destination="fF6-ng-LEQ" eventType="touchUpInside" id="kJM-T3-rZL"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0jR-5y-0AI">
+                                <rect key="frame" x="30" y="215" width="260" height="173"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I7R-nZ-5rB">
-                                <rect key="frame" x="16" y="40" width="30" height="33"/>
+                                <rect key="frame" x="16" y="32" width="24" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <state key="normal" title="X"/>
@@ -204,32 +238,18 @@
                                     <action selector="closeCreateTweetForm:" destination="fF6-ng-LEQ" eventType="touchUpInside" id="NPr-gF-QNa"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Gk-KB-Hjc">
-                                <rect key="frame" x="317" y="35" width="42" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Tweet"/>
-                                <connections>
-                                    <action selector="tweets:" destination="fF6-ng-LEQ" eventType="touchUpInside" id="k7Y-gz-XZw"/>
-                                </connections>
-                            </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="What's happening?" translatesAutoresizingMaskIntoConstraints="NO" id="ZV1-B7-uN2">
-                                <rect key="frame" x="76" y="86" width="283" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="acc-ZW-bNG"/>
                     </view>
                     <connections>
+                        <outlet property="imgView" destination="0jR-5y-0AI" id="LvQ-xz-NJK"/>
                         <outlet property="tweetTextView" destination="ZV1-B7-uN2" id="Sxe-K9-i0G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DIq-uo-R16" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4165.6000000000004" y="-582.45877061469275"/>
+            <point key="canvasLocation" x="4117.5" y="-582.04225352112678"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="SlP-ip-bEH">
@@ -237,7 +257,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eDF-0o-Wsh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="v4k-hl-BvO">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

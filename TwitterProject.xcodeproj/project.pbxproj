@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		681B45EA20F45E4600FB0604 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681B45E920F45E4600FB0604 /* TableViewCell.swift */; };
 		68A2EA4020F70E9900EFA8E3 /* TwitterRestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A2EA3F20F70E9900EFA8E3 /* TwitterRestApi.swift */; };
-		68A2EA4220F73C4A00EFA8E3 /* CreateTweets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A2EA4120F73C4A00EFA8E3 /* CreateTweets.swift */; };
-		68B548CA20F5F82000157A07 /* TwitterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B548C920F5F82000157A07 /* TwitterUser.swift */; };
-		68EE3ADC20EF9C0400BD61F1 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EE3ADB20EF9C0400BD61F1 /* Home.swift */; };
+		68A2EA4220F73C4A00EFA8E3 /* CreateTweetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A2EA4120F73C4A00EFA8E3 /* CreateTweetsViewController.swift */; };
+		68B548CA20F5F82000157A07 /* TwitterUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B548C920F5F82000157A07 /* TwitterUserViewController.swift */; };
+		68EE3ADC20EF9C0400BD61F1 /* TwitterHomeTimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EE3ADB20EF9C0400BD61F1 /* TwitterHomeTimelineViewController.swift */; };
 		68EE5C2B20EF908200DF1BE8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EE5C2A20EF908200DF1BE8 /* AppDelegate.swift */; };
 		68EE5C2D20EF908200DF1BE8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EE5C2C20EF908200DF1BE8 /* ViewController.swift */; };
 		68EE5C3020EF908200DF1BE8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68EE5C2E20EF908200DF1BE8 /* Main.storyboard */; };
@@ -25,9 +25,9 @@
 		02EE136F16805431B75CEE7C /* Pods-TwitterProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-TwitterProject/Pods-TwitterProject.release.xcconfig"; sourceTree = "<group>"; };
 		681B45E920F45E4600FB0604 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		68A2EA3F20F70E9900EFA8E3 /* TwitterRestApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterRestApi.swift; sourceTree = "<group>"; };
-		68A2EA4120F73C4A00EFA8E3 /* CreateTweets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTweets.swift; sourceTree = "<group>"; };
-		68B548C920F5F82000157A07 /* TwitterUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUser.swift; sourceTree = "<group>"; };
-		68EE3ADB20EF9C0400BD61F1 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		68A2EA4120F73C4A00EFA8E3 /* CreateTweetsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTweetsViewController.swift; sourceTree = "<group>"; };
+		68B548C920F5F82000157A07 /* TwitterUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterUserViewController.swift; sourceTree = "<group>"; };
+		68EE3ADB20EF9C0400BD61F1 /* TwitterHomeTimelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterHomeTimelineViewController.swift; sourceTree = "<group>"; };
 		68EE5C2720EF908200DF1BE8 /* TwitterProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68EE5C2A20EF908200DF1BE8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		68EE5C2C20EF908200DF1BE8 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -95,14 +95,14 @@
 				68EE5C2A20EF908200DF1BE8 /* AppDelegate.swift */,
 				68EE5C2C20EF908200DF1BE8 /* ViewController.swift */,
 				68A2EA3F20F70E9900EFA8E3 /* TwitterRestApi.swift */,
-				68EE3ADB20EF9C0400BD61F1 /* Home.swift */,
-				68B548C920F5F82000157A07 /* TwitterUser.swift */,
+				68EE3ADB20EF9C0400BD61F1 /* TwitterHomeTimelineViewController.swift */,
+				68B548C920F5F82000157A07 /* TwitterUserViewController.swift */,
+				68A2EA4120F73C4A00EFA8E3 /* CreateTweetsViewController.swift */,
 				68EE5C2E20EF908200DF1BE8 /* Main.storyboard */,
 				68EE5C3120EF908300DF1BE8 /* Assets.xcassets */,
 				68EE5C3320EF908300DF1BE8 /* LaunchScreen.storyboard */,
 				68EE5C3620EF908300DF1BE8 /* Info.plist */,
 				681B45E920F45E4600FB0604 /* TableViewCell.swift */,
-				68A2EA4120F73C4A00EFA8E3 /* CreateTweets.swift */,
 			);
 			path = TwitterProject;
 			sourceTree = "<group>";
@@ -249,11 +249,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				68A2EA4020F70E9900EFA8E3 /* TwitterRestApi.swift in Sources */,
-				68A2EA4220F73C4A00EFA8E3 /* CreateTweets.swift in Sources */,
-				68EE3ADC20EF9C0400BD61F1 /* Home.swift in Sources */,
+				68A2EA4220F73C4A00EFA8E3 /* CreateTweetsViewController.swift in Sources */,
+				68EE3ADC20EF9C0400BD61F1 /* TwitterHomeTimelineViewController.swift in Sources */,
 				68EE5C2D20EF908200DF1BE8 /* ViewController.swift in Sources */,
 				681B45EA20F45E4600FB0604 /* TableViewCell.swift in Sources */,
-				68B548CA20F5F82000157A07 /* TwitterUser.swift in Sources */,
+				68B548CA20F5F82000157A07 /* TwitterUserViewController.swift in Sources */,
 				68EE5C2B20EF908200DF1BE8 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,7 +331,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -385,7 +385,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
