@@ -14,11 +14,12 @@ import AlamofireImage
 
 private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
-class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAdaptivePresentationControllerDelegate {
+class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
     let vc = TwitterRestApi()
     private var refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
+    var onTappedID: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,12 +69,23 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! TableViewCell
         cell.usernameLabel.text = vc.tweetsData[indexPath.row]["name"]
         cell.usertweetsLabel.text = vc.tweetsData[indexPath.row]["text"]
+        cell.id = vc.tweetsData[indexPath.row]["tweetId"]!
+        cell.onTapPopUpButton = { id in
+            self.onTappedID = id
+        }
+
         if let url = vc.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
             cell.userImgView.af_setImage(withURL: imgUrl! as URL)
         } else {
             cell.userImgView.image = nil
         }
+        
+        let likeTitle = (vc.tweetsData[indexPath.row]["isLiked"] == "1") ? "unliked" : "like"
+        let retweetTitle = (vc.tweetsData[indexPath.row]["isRetweeted"] == "1") ? "unretweet" : "retweet"
+        cell.likeUserButton.setTitle(likeTitle, for: .normal)
+        cell.retweetUserButton.setTitle(retweetTitle, for: .normal)
+        
         return cell
     }
     
@@ -82,10 +94,40 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     }
     
     @objc func tweet(sender: UIBarButtonItem) {
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "postTweetViewController") as! UIViewController
+        let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "postTweetViewController"))!
         self.present(viewController, animated: true, completion: nil)
         
     }
+    @IBAction func tapOnButton(_ sender: Any) {
+        let id = self.onTappedID!
+        
+        let alert = UIAlertController()
+        let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
+            print(id)
+            TwitterRestApi().retweetTweet(id: id)
+        })
+        
+        let deleteAction = UIAlertAction(title: "Delete Tweet", style: .default, handler: { (action) -> Void in
+            TwitterRestApi().deleteTweet(id: id)
+            self.refresh(sender: AnyObject.self as AnyObject)
+        })
+        
+        let action3 = UIAlertAction(title: "Action 3", style: .default, handler: { (action) -> Void in
+            print("ACTION 3 selected!")
+        })
+        
+        // Cancel button
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
+        
+        alert.addAction(retweetAction)
+        alert.addAction(deleteAction)
+        alert.addAction(action3)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+
+    
 }
 
 

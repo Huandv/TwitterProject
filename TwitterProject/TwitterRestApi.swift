@@ -28,22 +28,33 @@ class TwitterRestApi {
                 }
                 do {
                     let json = try JSONSerialization.jsonObject(with: data!, options: [])
+//                    print(json)
                     
                     for item in json as! [Dictionary<String, Any>] {
                         var termArr = [String : String]()
                         var screen = item["user"] as! Dictionary<String, Any>
-                        
+                        print(item["favorited"]!)
                         termArr["name"] = screen["name"] as? String
                         termArr["screen_name"] = screen["screen_name"] as? String
                         termArr["text"] = item["text"] as? String
-                        
+                        termArr["tweetId"] = item["id_str"] as? String
+                        if let isLiked = item["favorited"] as? Int {
+                            termArr["isLiked"] = isLiked.description
+                        }
+                        if let isRetweeted = item["retweeted"] as? Int {
+                            termArr["isRetweeted"] = isRetweeted.description
+                        }
+                                                
                         var entities = item["entities"] as! Dictionary<String, Any>
                         if entities["media"] != nil {
                             var media_url = entities["media"] as! [[String:Any]]
                             termArr["url"] = media_url[0]["media_url"] as? String
                         }
+                        
+                        print(termArr)
                         self.tweetsData.append(termArr)
                     }
+                    print(self.tweetsData)
                     completion("OK")
                 } catch let jsonError as NSError {
                     print("json error: \(jsonError.localizedDescription)")
@@ -80,6 +91,42 @@ class TwitterRestApi {
                     completion(connectionError)
                 } else {
                     completion(nil)
+                }
+            }
+        }
+    }
+    
+    func deleteTweet(id: String){
+        let url = "https://api.twitter.com/1.1/statuses/destroy/\(id).json"
+        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let client = TWTRAPIClient(userID: userID)
+            var clientError : NSError?
+            let params = ["id": id]
+            
+            let request = client.urlRequest(withMethod: "POST", urlString: url, parameters: params, error: &clientError)
+            client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+                if connectionError != nil {
+                    //error
+                } else {
+                    //ok
+                }
+            }
+        }
+    }
+    func retweetTweet(id: String){
+//        let url = "https://api.twitter.com/1.1/statuses/destroy/\(id).json"
+        let url = "https://api.twitter.com/1.1/statuses/retweet/\(id).json"
+        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let client = TWTRAPIClient(userID: userID)
+            var clientError : NSError?
+            let params = ["id": id]
+            
+            let request = client.urlRequest(withMethod: "POST", urlString: url, parameters: params, error: &clientError)
+            client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+                if connectionError != nil {
+                    print("error")
+                } else {
+                    print("ok")
                 }
             }
         }

@@ -29,7 +29,8 @@ class ViewController: UIViewController {
                 print("signed in as \(String(describing: session?.userName))");
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController
-                self.navigationController?.pushViewController(vc, animated: false)
+//                self.navigationController?.pushViewController(vc, animated: false)
+                self.present(vc, animated: false, completion: nil)
                 
             } else {
                 print("error: \(String(describing: error?.localizedDescription))");

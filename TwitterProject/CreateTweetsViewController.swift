@@ -84,6 +84,9 @@ class CreateTweetsViewController: UIViewController, UIAlertViewDelegate, UIImage
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
                         print("ok")
                     }))
+                    alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (action: UIAlertAction!) in
+                        print("Handle Cancel Logic here")
+                    }))
                     self.present(alert, animated: true, completion: nil)
                 } else {
                     self.dismiss(animated: true, completion: nil)
