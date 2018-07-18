@@ -20,6 +20,7 @@ class CreateTweetsViewController: UIViewController, UIAlertViewDelegate, UIImage
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hideKeyboardWhenTappedAround()
         
         //create placeholder textView
         tweetTextView.text = "What's happening?"

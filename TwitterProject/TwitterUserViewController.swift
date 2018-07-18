@@ -19,8 +19,8 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     private var refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
-    var onTappedID: String?
-    
+    var retweetNameBtn: UIButton?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -68,12 +68,64 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! TableViewCell
         cell.usernameLabel.text = vc.tweetsData[indexPath.row]["name"]
+        cell.userscNameLabel.text = vc.tweetsData[indexPath.row]["screen_name"]
         cell.usertweetsLabel.text = vc.tweetsData[indexPath.row]["text"]
         cell.id = vc.tweetsData[indexPath.row]["tweetId"]!
-        cell.onTapPopUpButton = { id in
-            self.onTappedID = id
+        
+        //get id when tap more button
+        cell.onTapMoreButton = { id in
+            let alert = UIAlertController()
+            
+            let deleteAction = UIAlertAction(title: "Delete Tweet", style: .default, handler: { (action) -> Void in
+                TwitterRestApi().deleteTweet(id: id)
+                self.refresh(sender: AnyObject.self as AnyObject)
+            })
+            
+            // Cancel button
+            let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
+            
+            alert.addAction(deleteAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
         }
-
+        
+        //get id when tap retweet button
+        cell.onTapRetweetButton = { id, retweetBtn in
+            self.retweetNameBtn = retweetBtn
+            let name = retweetBtn.titleLabel?.text
+            if name == "retweet" {
+                self.retweet(id: id)
+            } else {
+                self.unretweet(id: id)
+            }
+        }
+        
+        //get id when tap like button
+        cell.onTapLikeButton = { id, likeBtn in
+            let name = likeBtn.titleLabel?.text
+            if name == "like" {
+                //like
+                let url = "https://api.twitter.com/1.1/favorites/create.json"
+                TwitterRestApi().likeTweet(id: id, url: url, completion: { (result) in
+                    if let _ = result {
+                        likeBtn.setTitle("unlike", for: .normal)
+                    } else {
+                        //error
+                    }
+                })
+            } else {
+                //unlike
+                let url = "https://api.twitter.com/1.1/favorites/destroy.json"
+                TwitterRestApi().likeTweet(id: id, url: url, completion: { (result) in
+                    if let _ = result {
+                        likeBtn.setTitle("like", for: .normal)
+                    } else {
+                        //error
+                    }
+                })
+            }
+        }
+        
         if let url = vc.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
             cell.userImgView.af_setImage(withURL: imgUrl! as URL)
@@ -98,35 +150,41 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
         self.present(viewController, animated: true, completion: nil)
         
     }
-    @IBAction func tapOnButton(_ sender: Any) {
-        let id = self.onTappedID!
-        
+
+    func retweet(id: String) {
         let alert = UIAlertController()
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
-            print(id)
-            TwitterRestApi().retweetTweet(id: id)
+            TwitterRestApi().retweetTweet(id: id, completion: { (result) in
+                if let _ = result {
+                    self.retweetNameBtn?.setTitle("unretweet", for: .normal)
+                } else {
+                    //error
+                }
+            })
         })
-        
-        let deleteAction = UIAlertAction(title: "Delete Tweet", style: .default, handler: { (action) -> Void in
-            TwitterRestApi().deleteTweet(id: id)
-            self.refresh(sender: AnyObject.self as AnyObject)
-        })
-        
-        let action3 = UIAlertAction(title: "Action 3", style: .default, handler: { (action) -> Void in
-            print("ACTION 3 selected!")
-        })
-        
-        // Cancel button
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
         
         alert.addAction(retweetAction)
-        alert.addAction(deleteAction)
-        alert.addAction(action3)
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
-    
-
+    func unretweet(id: String) {
+        let alert = UIAlertController()
+        let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
+            TwitterRestApi().unretweetTweet(id: id, completion: { (result) in
+                if let _ = result {
+                    self.retweetNameBtn?.setTitle("retweet", for: .normal)
+                } else {
+                    //error
+                }
+            })
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
+        
+        alert.addAction(retweetAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
     
 }
 

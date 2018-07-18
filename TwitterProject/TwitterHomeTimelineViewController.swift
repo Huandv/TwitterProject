@@ -15,16 +15,15 @@ import Unbox
 
 private let homeTimelineRestUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
 
-class TwitterHomeTimelineViewController : UIViewController, UITableViewDataSource {
-    private var tweetsData = [[String : String]]()
-    private let vc = TwitterRestApi()
+class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource {
     private var refreshControl = UIRefreshControl()
+    var retweetNameBtn: UIButton?
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        vc.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
+        self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
             if let _ = result {
                 self.tableView.reloadData()
             } else {
@@ -46,7 +45,6 @@ class TwitterHomeTimelineViewController : UIViewController, UITableViewDataSourc
         if self.navigationController != nil {
             self.navigationItem.rightBarButtonItem = rightButtonItem
         }
-
         refresh()
     }
     
@@ -57,8 +55,8 @@ class TwitterHomeTimelineViewController : UIViewController, UITableViewDataSourc
     }
     
     @objc func refresh(sender:AnyObject) {
-        vc.tweetsData.removeAll()
-        vc.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
+        self.tweetsData.removeAll()
+        self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
             if let _ = result {
                 self.tableView.reloadData()
             } else {
@@ -71,20 +69,97 @@ class TwitterHomeTimelineViewController : UIViewController, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
-        cell.label.text = vc.tweetsData[indexPath.row]["text"]
-        cell.name.text = vc.tweetsData[indexPath.row]["name"]
+        cell.label.text = self.tweetsData[indexPath.row]["text"]
+        cell.name.text = self.tweetsData[indexPath.row]["name"]
+        cell.scNameLabel.text = self.tweetsData[indexPath.row]["screen_name"]
+        cell.id = self.tweetsData[indexPath.row]["tweetId"]!
         
-        if let url = vc.tweetsData[indexPath.row]["url"] {
+        if let url = self.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
             cell.imgView.af_setImage(withURL: imgUrl! as URL)
         } else {
             cell.imgView.image = nil
         }
+        
+        cell.onTapLikeHomeButton = { id, likeBtn in
+            let name = likeBtn.titleLabel?.text
+            if name == "like" {
+                //like
+                let url = "https://api.twitter.com/1.1/favorites/create.json"
+                self.likeTweet(id: id, url: url, completion: { (result) in
+                    if let _ = result {
+                        likeBtn.setTitle("unlike", for: .normal)
+                    } else {
+                        //error
+                    }
+                })
+            } else {
+                //unlike
+                let url = "https://api.twitter.com/1.1/favorites/destroy.json"
+                self.likeTweet(id: id, url: url, completion: { (result) in
+                    if let _ = result {
+                        likeBtn.setTitle("like", for: .normal)
+                    } else {
+                        //error
+                    }
+                })
+            }
+        }
+        cell.onTapRetweetHomeButton = { id, retweetBtn in
+            self.retweetNameBtn = retweetBtn
+            let name = retweetBtn.titleLabel?.text
+            if name == "retweet" {                
+                self.retweet(id: id)
+            } else {
+                self.unretweet(id: id)
+            }
+        }
+        
+        let likeTitle = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? "unliked" : "like"
+        let retweetTitle = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? "unretweet" : "retweet"
+        cell.likeHomeButton.setTitle(likeTitle, for: .normal)
+        cell.retweetHomeButton.setTitle(retweetTitle, for: .normal)
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vc.tweetsData.count
+        return self.tweetsData.count
+    }
+    
+    func retweet(id: String) {
+        let alert = UIAlertController()
+        let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
+            self.retweetTweet(id: id, completion: { (result) in
+                if let _ = result {
+                    self.retweetNameBtn?.setTitle("unretweet", for: .normal)
+                } else {
+                    //error
+                }
+            })
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
+        
+        alert.addAction(retweetAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
+    func unretweet(id: String) {
+        let alert = UIAlertController()
+        let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
+            self.unretweetTweet(id: id, completion: { (result) in
+                if let _ = result {
+                    self.retweetNameBtn?.setTitle("retweet", for: .normal)
+                } else {
+                    //error
+                }
+            })
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
+        
+        alert.addAction(retweetAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
     }
     
     @objc func userView(sender: UIBarButtonItem) {
