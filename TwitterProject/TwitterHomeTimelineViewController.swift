@@ -12,6 +12,7 @@ import TwitterKit
 import Alamofire
 import AlamofireImage
 import Unbox
+import SDWebImage
 
 private let homeTimelineRestUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
 
@@ -69,6 +70,11 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
+        
+        let profileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
+        cell.profileImageView.sd_setImage(with: NSURL(string: profileUrlImage!)! as URL)
+//        cell.profileImageView.af_setImage(withURL: NSURL(string: profileUrlImage!)! as URL)
+        
         cell.label.text = self.tweetsData[indexPath.row]["text"]
         cell.name.text = self.tweetsData[indexPath.row]["name"]
         cell.scNameLabel.text = self.tweetsData[indexPath.row]["screen_name"]
@@ -76,7 +82,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         
         if let url = self.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
-            cell.imgView.af_setImage(withURL: imgUrl! as URL)
+            cell.imgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage"))
         } else {
             cell.imgView.image = nil
         }

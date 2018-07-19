@@ -11,9 +11,11 @@ import UIKit
 class TableViewCell: UITableViewCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var name: UILabel!
+    @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var scNameLabel: UILabel!
     
     @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userscNameLabel: UILabel!
     
     @IBOutlet weak var usertweetsLabel: UILabel!

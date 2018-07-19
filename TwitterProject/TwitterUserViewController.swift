@@ -14,8 +14,7 @@ import AlamofireImage
 
 private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
-class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
-    let vc = TwitterRestApi()
+class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
     private var refreshControl = UIRefreshControl()
     
     @IBOutlet weak var tableView: UITableView!
@@ -24,7 +23,7 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        vc.getFeed(requestUrl: userTimelineRestUrl) { (result) in
+        self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
             if let _ = result {
                 self.tableView.reloadData()
             } else {
@@ -53,8 +52,8 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     }
     
     @objc func refresh(sender:AnyObject) {
-        vc.tweetsData.removeAll()
-        vc.getFeed(requestUrl: userTimelineRestUrl) { (result) in
+        self.tweetsData.removeAll()
+        self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
             if let _ = result {
                 self.tableView.reloadData()
             } else {
@@ -67,10 +66,14 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! TableViewCell
-        cell.usernameLabel.text = vc.tweetsData[indexPath.row]["name"]
-        cell.userscNameLabel.text = vc.tweetsData[indexPath.row]["screen_name"]
-        cell.usertweetsLabel.text = vc.tweetsData[indexPath.row]["text"]
-        cell.id = vc.tweetsData[indexPath.row]["tweetId"]!
+        
+        let userProfileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
+        cell.userProfileImageView.sd_setImage(with: NSURL(string: userProfileUrlImage!)! as URL)
+        
+        cell.usernameLabel.text = self.tweetsData[indexPath.row]["name"]
+        cell.userscNameLabel.text = self.tweetsData[indexPath.row]["screen_name"]
+        cell.usertweetsLabel.text = self.tweetsData[indexPath.row]["text"]
+        cell.id = self.tweetsData[indexPath.row]["tweetId"]!
         
         //get id when tap more button
         cell.onTapMoreButton = { id in
@@ -126,15 +129,15 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
             }
         }
         
-        if let url = vc.tweetsData[indexPath.row]["url"] {
+        if let url = self.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
             cell.userImgView.af_setImage(withURL: imgUrl! as URL)
         } else {
             cell.userImgView.image = nil
         }
         
-        let likeTitle = (vc.tweetsData[indexPath.row]["isLiked"] == "1") ? "unliked" : "like"
-        let retweetTitle = (vc.tweetsData[indexPath.row]["isRetweeted"] == "1") ? "unretweet" : "retweet"
+        let likeTitle = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? "unliked" : "like"
+        let retweetTitle = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? "unretweet" : "retweet"
         cell.likeUserButton.setTitle(likeTitle, for: .normal)
         cell.retweetUserButton.setTitle(retweetTitle, for: .normal)
         
@@ -142,7 +145,7 @@ class TwitterUserViewController: UIViewController , UITableViewDataSource, UIAda
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vc.tweetsData.count
+        return self.tweetsData.count
     }
     
     @objc func tweet(sender: UIBarButtonItem) {
