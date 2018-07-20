@@ -20,7 +20,7 @@ class TwitterRestApi: UIViewController {
             print(userID)
             
             let client = TWTRAPIClient(userID: userID)
-            let params = ["user_id": userID, "count": "100"]
+            let params = ["user_id": userID, "count": "50"]
             var clientError : NSError?
             
             let request = client.urlRequest(withMethod: "GET", urlString: requestUrl, parameters: params, error: &clientError)
@@ -29,43 +29,26 @@ class TwitterRestApi: UIViewController {
                     print("Error: \(String(describing: connectionError))")
                     completion("nil")
                 }
-                
                 do {
+                    let models: [TweetData] = try unbox(data: data!)
+                    print(models)
                     
-//                    let models: [Model] = try unbox(data: data!)
-//                    print(models)
-//                    print(models[0].text)
-//                    print(models[0].createdAt)
-                    
-                    let json = try JSONSerialization.jsonObject(with: data!, options: [])
-
-                    print(json)
-                    for item in json as! [Dictionary<String, Any>] {
+                    for item in models {
                         var termArr = [String : String]()
-                        var screen = item["user"] as! Dictionary<String, Any>
-                        termArr["name"] = screen["name"] as? String
-                        termArr["screen_name"] = screen["screen_name"] as? String
-                        termArr["screen_name"] = "@" + termArr["screen_name"]!
-                        termArr["profile_image_url"] = screen["profile_image_url"] as? String
-                        termArr["text"] = item["text"] as? String
-                        termArr["tweetId"] = item["id_str"] as? String
-                        if let isLiked = item["favorited"] as? Int {
-                            termArr["isLiked"] = isLiked.description
+                        
+                        termArr["name"] = item.name
+                        termArr["screen_name"] = "@" + item.screen_name
+                        termArr["text"] = item.text
+                        termArr["profile_image_url"] = item.profile_image_url
+                        termArr["tweetId"] = item.tweetId
+                        termArr["isLiked"] = item.isLiked
+                        termArr["isRetweeted"] = item.isRetweeted
+                        if let mediaUrl = item.media_url {
+                            termArr["url"] = mediaUrl[0].media_url!
                         }
-                        if let isRetweeted = item["retweeted"] as? Int {
-                            termArr["isRetweeted"] = isRetweeted.description
-                        }
-
-                        var entities = item["entities"] as! Dictionary<String, Any>
-                        if entities["media"] != nil {
-                            var media_url = entities["media"] as! [[String:Any]]
-                            termArr["url"] = media_url[0]["media_url"] as? String
-                        }
-
                         self.tweetsData.append(termArr)
                     }
                     completion("OK")
-//                    print(self.tweetsData)
                 } catch let jsonError as NSError {
                     print("json error: \(jsonError.localizedDescription)")
                 }
@@ -177,42 +160,17 @@ class TwitterRestApi: UIViewController {
         }
     }
     
+    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
+        
+        let scale = newWidth / image.size.width
+        let newHeight = image.size.height * scale
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
+    }
 }
-
-//struct Model {
-//    let name: String
-//    let screen_name: String
-//    let text: String
-//    let profile_image_url: String
-//    let tweetId: String
-//    let isLiked: String
-//    let isRetweeted: String
-////    let media_url: String?
-//
-////    let createdAt: Date
-//
-//}
-
-//extension Model: Unboxable {
-//    init(unboxer: Unboxer) throws {
-//        name = try unboxer.unbox(keyPath: "user.name")
-//        screen_name = try unboxer.unbox(keyPath: "user.screen_name")
-//        text = try unboxer.unbox(key: "text")
-//        profile_image_url = try unboxer.unbox(keyPath: "user.profile_image_url")
-//        tweetId = try unboxer.unbox(key: "id_str")
-//        isLiked = try unboxer.unbox(key: "favorited")
-//        isRetweeted = try unboxer.unbox(key: "retweeted")
-////        media_url = try unboxer.unbox(keyPath: "entities.media.media_url")
-//
-//
-//
-//
-//
-////        let formatter = DateFormatter()
-//        // Tue Jul 10 11:13:55 +0000 2018
-////        formatter.dateFormat = "E MMM d HH:mm:ss Z yyyy"
-////        createdAt = try unboxer.unbox(key: "created_at", formatter: formatter)
-//    }
-//}
 
 

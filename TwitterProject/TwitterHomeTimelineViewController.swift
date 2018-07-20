@@ -72,8 +72,12 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
         
         let profileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
+        cell.profileImageView.layer.borderWidth = 1.0
+        cell.profileImageView.layer.masksToBounds = false
+        cell.profileImageView.layer.borderColor = UIColor.white.cgColor
+        cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.width / 2
+        cell.profileImageView.clipsToBounds = true
         cell.profileImageView.sd_setImage(with: NSURL(string: profileUrlImage!)! as URL)
-//        cell.profileImageView.af_setImage(withURL: NSURL(string: profileUrlImage!)! as URL)
         
         cell.label.text = self.tweetsData[indexPath.row]["text"]
         cell.name.text = self.tweetsData[indexPath.row]["name"]
@@ -82,7 +86,9 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         
         if let url = self.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
-            cell.imgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage"))
+            cell.imgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage")) { (image, error, cacheType, imageUrl) in
+                cell.imgView.image = self.resizeImage(image: image!, newWidth: 200)
+            }
         } else {
             cell.imgView.image = nil
         }
@@ -125,7 +131,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetTitle = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? "unretweet" : "retweet"
         cell.likeHomeButton.setTitle(likeTitle, for: .normal)
         cell.retweetHomeButton.setTitle(retweetTitle, for: .normal)
-        
+
         return cell
     }
     

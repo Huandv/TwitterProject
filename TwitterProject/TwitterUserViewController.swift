@@ -11,6 +11,7 @@ import UIKit
 import TwitterKit
 import Alamofire
 import AlamofireImage
+import SDWebImage
 
 private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
@@ -68,6 +69,11 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! TableViewCell
         
         let userProfileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
+        cell.userProfileImageView.layer.borderWidth = 1.0
+        cell.userProfileImageView.layer.masksToBounds = false
+        cell.userProfileImageView.layer.borderColor = UIColor.white.cgColor
+        cell.userProfileImageView.layer.cornerRadius = cell.userProfileImageView.frame.size.width / 2
+        cell.userProfileImageView.clipsToBounds = true
         cell.userProfileImageView.sd_setImage(with: NSURL(string: userProfileUrlImage!)! as URL)
         
         cell.usernameLabel.text = self.tweetsData[indexPath.row]["name"]
@@ -78,7 +84,6 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         //get id when tap more button
         cell.onTapMoreButton = { id in
             let alert = UIAlertController()
-            
             let deleteAction = UIAlertAction(title: "Delete Tweet", style: .default, handler: { (action) -> Void in
                 TwitterRestApi().deleteTweet(id: id)
                 self.refresh(sender: AnyObject.self as AnyObject)
@@ -86,7 +91,6 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
             
             // Cancel button
             let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
-            
             alert.addAction(deleteAction)
             alert.addAction(cancelAction)
             self.present(alert, animated: true, completion: nil)
@@ -128,10 +132,11 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
                 })
             }
         }
-        
         if let url = self.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
-            cell.userImgView.af_setImage(withURL: imgUrl! as URL)
+            cell.userImgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage")) { (image, error, cacheType, imageUrl) in
+                cell.userImgView.image = self.resizeImage(image: image!, newWidth: 200)
+            }
         } else {
             cell.userImgView.image = nil
         }
