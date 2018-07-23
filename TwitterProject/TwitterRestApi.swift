@@ -13,7 +13,8 @@ import Unbox
 
 class TwitterRestApi: UIViewController {
     var tweetsData = [[String : String]]()
-    var userProfileImageUrl : String?
+//    var userInfor : UserInformation?
+//    var userInfor = [String:String]()
     
     func getFeed(requestUrl: String, completion: @escaping (String?) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
@@ -31,8 +32,6 @@ class TwitterRestApi: UIViewController {
                 }
                 do {
                     let models: [TweetData] = try unbox(data: data!)
-                    print(models)
-                    
                     for item in models {
                         var termArr = [String : String]()
                         
@@ -55,6 +54,30 @@ class TwitterRestApi: UIViewController {
             }
         }
     }
+    
+    func getUserInformation (completion: @escaping (UserInformation?) -> ()) {
+        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let url = "https://api.twitter.com/1.1/account/verify_credentials.json"
+            let client = TWTRAPIClient(userID: userID)
+            var clientError : NSError?
+            let params = ["id": userID]
+            
+            let request = client.urlRequest(withMethod: "GET", urlString: url, parameters: params, error: &clientError)
+            client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+                if connectionError != nil {
+                    //error
+                    completion(nil)
+                }
+                do {
+                    let userInfo: UserInformation = try unbox(data: data!)
+                    completion(userInfo)
+                } catch let jsonError as NSError {
+                    print("json error: \(jsonError.localizedDescription)")
+                }
+            }
+        }
+    }
+    
     
     func postIMG(image: Data?, completion: @escaping (String?) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
@@ -141,7 +164,6 @@ class TwitterRestApi: UIViewController {
         }
     }
     
-    
     //like & unlike tweet
     func likeTweet(id: String, url: String, completion: @escaping (String?) -> Void) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
@@ -158,18 +180,6 @@ class TwitterRestApi: UIViewController {
                 }
             }
         }
-    }
-    
-    func resizeImage(image: UIImage, newWidth: CGFloat) -> UIImage {
-        
-        let scale = newWidth / image.size.width
-        let newHeight = image.size.height * scale
-        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
-        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
     }
 }
 

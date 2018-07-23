@@ -16,13 +16,21 @@ import SDWebImage
 private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
 class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
+    
     private var refreshControl = UIRefreshControl()
+    @IBOutlet weak var userBannerImageView: UIImageView!
+    @IBOutlet weak var userProfileImageView: UIImageView!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var userScreenNameLabel: UILabel!
+    
     
     @IBOutlet weak var tableView: UITableView!
     var retweetNameBtn: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
             if let _ = result {
@@ -50,6 +58,25 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControlEvents.valueChanged)
         tableView.addSubview(refreshControl)
+        
+        
+        getUserInformation { (result) in
+            if let userInfo = result {
+                print(userInfo)
+                
+                let bannerUrl = userInfo.profile_banner_url
+                self.userBannerImageView.sd_setImage(with: NSURL(string: bannerUrl)! as URL)
+                self.userProfileImageView.sd_setImage(with: NSURL(string: userInfo.profile_image_url)! as URL)
+                
+                self.userNameLabel.text = userInfo.name
+                self.userScreenNameLabel.text = "@" + userInfo.screen_name
+//                self.userJoinDateLabel.text = userInfo.createdAt
+                
+            } else {
+                print("error")
+            }
+        }
+
     }
     
     @objc func refresh(sender:AnyObject) {
@@ -99,8 +126,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         //get id when tap retweet button
         cell.onTapRetweetButton = { id, retweetBtn in
             self.retweetNameBtn = retweetBtn
-            let name = retweetBtn.titleLabel?.text
-            if name == "retweet" {
+            if retweetBtn.backgroundImage(for: .normal) == #imageLiteral(resourceName: "retweet") {
                 self.retweet(id: id)
             } else {
                 self.unretweet(id: id)
@@ -109,13 +135,12 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         
         //get id when tap like button
         cell.onTapLikeButton = { id, likeBtn in
-            let name = likeBtn.titleLabel?.text
-            if name == "like" {
+            if likeBtn.backgroundImage(for: .normal) == #imageLiteral(resourceName: "love-icon") {
                 //like
                 let url = "https://api.twitter.com/1.1/favorites/create.json"
                 TwitterRestApi().likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        likeBtn.setTitle("unlike", for: .normal)
+                        likeBtn.setBackgroundImage(#imageLiteral(resourceName: "liked"), for: .normal)
                     } else {
                         //error
                     }
@@ -125,7 +150,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
                 let url = "https://api.twitter.com/1.1/favorites/destroy.json"
                 TwitterRestApi().likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        likeBtn.setTitle("like", for: .normal)
+                        likeBtn.setBackgroundImage(#imageLiteral(resourceName: "love-icon"), for: .normal)
                     } else {
                         //error
                     }
@@ -134,17 +159,18 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         }
         if let url = self.tweetsData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
-            cell.userImgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage")) { (image, error, cacheType, imageUrl) in
-                cell.userImgView.image = self.resizeImage(image: image!, newWidth: 200)
-            }
+            cell.userImgHeightLayoutConstraint.constant = 131
+            cell.userImgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage"))
         } else {
+            cell.userImgHeightLayoutConstraint.constant = 0
             cell.userImgView.image = nil
         }
         
-        let likeTitle = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? "unliked" : "like"
-        let retweetTitle = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? "unretweet" : "retweet"
-        cell.likeUserButton.setTitle(likeTitle, for: .normal)
-        cell.retweetUserButton.setTitle(retweetTitle, for: .normal)
+        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "liked") : #imageLiteral(resourceName: "love-icon")
+        cell.likeUserButton.setBackgroundImage(likeImg, for: .normal)
+        
+        let retweetImg = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "unrt") : #imageLiteral(resourceName: "retweet")
+        cell.retweetUserButton.setBackgroundImage(retweetImg, for: .normal)
         
         return cell
     }
@@ -164,7 +190,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
             TwitterRestApi().retweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setTitle("unretweet", for: .normal)
+                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "unrt"), for: .normal)
                 } else {
                     //error
                 }
@@ -181,7 +207,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
             TwitterRestApi().unretweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setTitle("retweet", for: .normal)
+                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "retweet"), for: .normal)
                 } else {
                     //error
                 }

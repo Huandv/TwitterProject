@@ -13,10 +13,12 @@ import Unbox
 
 class ViewController: TwitterRestApi {
     var logInButton : TWTRLogInButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController
             self.navigationController?.pushViewController(vc, animated: false)

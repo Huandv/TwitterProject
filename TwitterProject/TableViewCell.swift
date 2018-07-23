@@ -28,6 +28,8 @@ class TableViewCell: UITableViewCell {
     @IBOutlet weak var likeHomeButton: UIButton!
     @IBOutlet weak var retweetHomeButton: UIButton!
     
+    @IBOutlet weak var imageHeightLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var userImgHeightLayoutConstraint: NSLayoutConstraint!
     
     var id: String = ""
     var onTapMoreButton: ((_ id: String) -> Void)?

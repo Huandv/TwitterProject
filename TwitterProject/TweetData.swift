@@ -41,3 +41,29 @@ struct Media: Unboxable {
         media_url = unboxer.unbox(key: "media_url")
     }
 }
+
+
+struct UserInformation {
+    let name : String
+    let screen_name : String
+    let profile_image_url : String
+    let profile_banner_url : String
+    let location : String
+//    let createdAt : Date
+}
+
+extension UserInformation : Unboxable {
+    init(unboxer: Unboxer) throws {
+        name = try unboxer.unbox(key: "name")
+        screen_name = try unboxer.unbox(key: "screen_name")
+        profile_image_url = try unboxer.unbox(key: "profile_image_url")
+        profile_banner_url = try unboxer.unbox(key: "profile_banner_url")
+        location = try unboxer.unbox(key: "location")
+        
+//        let formatter = DateFormatter()
+//        // Tue Jul 10 11:13:55 +0000 2018
+//        formatter.dateFormat = "E MMM d HH:mm:ss Z yyyy"
+//        createdAt = try unboxer.unbox(key: "created_at", formatter: formatter)
+    }
+}
+
