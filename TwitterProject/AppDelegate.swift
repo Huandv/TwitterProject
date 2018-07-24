@@ -49,4 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
+extension UIApplication {
+    var statusBar: UIView? {
+        return value(forKey: "statusBar") as? UIView
+    }
+}
+
+
+
 

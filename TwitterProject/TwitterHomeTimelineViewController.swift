@@ -22,7 +22,8 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
+        
         
         self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
             if let _ = result {

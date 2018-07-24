@@ -17,7 +17,7 @@ class ViewController: TwitterRestApi {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+        if let _ = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController

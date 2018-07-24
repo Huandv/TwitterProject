@@ -15,13 +15,14 @@ import SDWebImage
 
 private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
-class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
+class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
     
     private var refreshControl = UIRefreshControl()
     @IBOutlet weak var userBannerImageView: UIImageView!
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userScreenNameLabel: UILabel!
+    @IBOutlet weak var headerScrollView: UIScrollView!
     
     
     @IBOutlet weak var tableView: UITableView!
@@ -30,7 +31,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        headerScrollView.translatesAutoresizingMaskIntoConstraints = false
         
         self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
             if let _ = result {
@@ -70,13 +71,22 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
                 
                 self.userNameLabel.text = userInfo.name
                 self.userScreenNameLabel.text = "@" + userInfo.screen_name
-//                self.userJoinDateLabel.text = userInfo.createdAt
-                
             } else {
                 print("error")
             }
         }
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        self.navigationController?.title = "dfghj"
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
     }
     
     @objc func refresh(sender:AnyObject) {
@@ -179,6 +189,30 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         return self.tweetsData.count
     }
     
+    @IBOutlet weak var topLayoutConstraint: NSLayoutConstraint!
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let position = scrollView.contentOffset.y
+        topLayoutConstraint.constant = -position
+        
+        self.navigationController?.navigationBar.topItem?.title = (position != 0) ?  "User Timeline" : nil
+        
+        var offset = scrollView.contentOffset.y / 150
+        if offset > 1 {
+            offset = 1
+            let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
+            self.navigationController?.navigationBar.tintColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1)
+            self.navigationController?.navigationBar.backgroundColor = color
+            UIApplication.shared.statusBar?.backgroundColor = color
+        } else {
+            let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
+            self.navigationController?.navigationBar.tintColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1)
+            self.navigationController?.navigationBar.backgroundColor = color
+            UIApplication.shared.statusBar?.backgroundColor = color
+        }
+
+    }
+    
     @objc func tweet(sender: UIBarButtonItem) {
         let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "postTweetViewController"))!
         self.present(viewController, animated: true, completion: nil)
@@ -219,6 +253,18 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UIAdapt
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
+    
+    
+    @IBAction func profileEditAction(_ sender: Any) {
+//        let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "profileEdit"))!
+//        self.present(viewController, animated: true, completion: nil)
+        guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "profileEdit") else { return }
+        let navController = UINavigationController(rootViewController: myVC)
+        
+        self.present(navController, animated: true, completion: nil)
+    }
+    
+    
     
 }
 

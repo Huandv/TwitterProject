@@ -13,8 +13,6 @@ import Unbox
 
 class TwitterRestApi: UIViewController {
     var tweetsData = [[String : String]]()
-//    var userInfor : UserInformation?
-//    var userInfor = [String:String]()
     
     func getFeed(requestUrl: String, completion: @escaping (String?) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
@@ -181,6 +179,25 @@ class TwitterRestApi: UIViewController {
             }
         }
     }
+    
+    func profileEdit(params: [String:String], completion: @escaping (String?) -> Void) {
+        let url = "https://api.twitter.com/1.1/account/update_profile.json"
+        if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
+            let client = TWTRAPIClient(userID: userID)
+            var clientError : NSError?
+//            let params = ["description": "hello world!", "name": "Huancaoz"]
+            
+            let request = client.urlRequest(withMethod: "POST", urlString: url, parameters: params, error: &clientError)
+            client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+                if connectionError != nil {
+                    completion(nil)
+                } else {
+                    completion("ok")
+                }
+            }
+        }
+    }
+    
 }
 
 
