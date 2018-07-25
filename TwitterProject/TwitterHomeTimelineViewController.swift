@@ -19,11 +19,11 @@ private let homeTimelineRestUrl = "https://api.twitter.com/1.1/statuses/home_tim
 class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource {
     private var refreshControl = UIRefreshControl()
     var retweetNameBtn: UIButton?
-    
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
             if let _ = result {
@@ -32,23 +32,23 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
                 //error
             }
         }
-        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
-        
-        //create button in rightbar
-        let rightButtonItem = UIBarButtonItem.init(
-            title: "User",
-            style: .done,
-            target: self,
-            action: #selector(userView(sender:))
-        )
-        
-        if self.navigationController != nil {
-            self.navigationItem.rightBarButtonItem = rightButtonItem
-        }
+
         refresh()
     }
+    
+    @IBAction func logout(_ sender: Any) {
+        self.logout()
+                let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "welcome"))!
+                self.present(viewController, animated: false, completion: nil)
+    }
+    
+    @IBAction func onTapUserBarbutton(_ sender: Any) {
+        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "user")
+        self.navigationController?.pushViewController(viewController!, animated: false)
+    }
+    
     
     func refresh() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -174,10 +174,10 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         present(alert, animated: true, completion: nil)
     }
     
-    @objc func userView(sender: UIBarButtonItem) {
-        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "user") as! UIViewController
-        self.navigationController?.pushViewController(viewController, animated: false)
-    }
+//    @objc func userView(sender: UIBarButtonItem) {
+//        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "user")
+//        self.navigationController?.pushViewController(viewController!, animated: false)
+//    }
     
 }
 

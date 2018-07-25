@@ -49,7 +49,8 @@ struct UserInformation {
     let profile_image_url : String
     let profile_banner_url : String
     let location : String
-//    let createdAt : Date
+    let friends_count: String
+    let followers_count: String
 }
 
 extension UserInformation : Unboxable {
@@ -59,11 +60,9 @@ extension UserInformation : Unboxable {
         profile_image_url = try unboxer.unbox(key: "profile_image_url")
         profile_banner_url = try unboxer.unbox(key: "profile_banner_url")
         location = try unboxer.unbox(key: "location")
+        friends_count = try unboxer.unbox(key: "friends_count")
+        followers_count = try unboxer.unbox(key: "followers_count")
         
-//        let formatter = DateFormatter()
-//        // Tue Jul 10 11:13:55 +0000 2018
-//        formatter.dateFormat = "E MMM d HH:mm:ss Z yyyy"
-//        createdAt = try unboxer.unbox(key: "created_at", formatter: formatter)
     }
 }
 

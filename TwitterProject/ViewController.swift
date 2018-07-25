@@ -16,12 +16,13 @@ class ViewController: TwitterRestApi {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         if let _ = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController
-            self.navigationController?.pushViewController(vc, animated: false)
+            guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "home") else { return }
+            let navController = UINavigationController(rootViewController: myVC)
+            self.present(navController, animated: false, completion: nil)
         } else {
             login()
         }
@@ -30,18 +31,14 @@ class ViewController: TwitterRestApi {
     private func login () {
         logInButton = TWTRLogInButton(logInCompletion: { session, error in
             if (session != nil) {
-                print("signed in as \(String(describing: session?.userName))");
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "home") as UIViewController
-//                self.navigationController?.pushViewController(vc, animated: false)
-                self.present(vc, animated: false, completion: nil)
+                let viewController = (self.storyboard?.instantiateViewController(withIdentifier: "home"))!
+                self.present(viewController, animated: false, completion: nil)
                 
             } else {
                 print("error: \(String(describing: error?.localizedDescription))");
             }
         })
-        
-        logInButton.center = self.view.center
+        logInButton.center = CGPoint(x: 190, y: 500)
         self.view.addSubview(logInButton)
     }
 
@@ -57,11 +54,9 @@ extension UIViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
-    
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    
 }
 
 

@@ -10,34 +10,46 @@ import Foundation
 import UIKit
 import TwitterKit
 
-class CreateTweetsViewController: UIViewController, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var imageIDUploaded: String? = nil
     var vc = TwitterRestApi()
     var isTextViewEdited: Bool = false
     
     @IBOutlet weak var tweetTextView: UITextView!
     @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var avatarImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
-        
+
         //create placeholder textView
         tweetTextView.text = "What's happening?"
         tweetTextView.textColor = UIColor.lightGray
         tweetTextView.delegate = self
         
+        self.getUserInformation { (result) in
+            if let userInfo = result {
+                self.avatarImageView.layer.borderWidth = 1.0
+                self.avatarImageView.layer.masksToBounds = false
+                self.avatarImageView.layer.borderColor = UIColor.white.cgColor
+                self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.width / 2
+                self.avatarImageView.clipsToBounds = true
+                self.avatarImageView.sd_setImage(with: NSURL(string: userInfo.profile_image_url)! as URL)
+            } else {
+                print("error")
+            }
+        }
+        
     }
+    
     @IBAction func uploadImg(_ sender: Any) {
         let image = UIImagePickerController()
         image.delegate = self
-        
         image.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        
         image.allowsEditing = false
         
         self.present(image, animated: true) {
-            
         }
     }
     
@@ -47,14 +59,12 @@ class CreateTweetsViewController: UIViewController, UIAlertViewDelegate, UIImage
         } else {
             //error
         }
-        
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func tweets(_ sender: Any) {
         let url = "https://api.twitter.com/1.1/statuses/update.json"
         let textTweet = isTextViewEdited ? tweetTextView.text : ""
-
         
         if let imgData = imgView.image {
             let tweetImage: Data? = UIImageJPEGRepresentation(imgData, 1)!
@@ -76,7 +86,6 @@ class CreateTweetsViewController: UIViewController, UIAlertViewDelegate, UIImage
                     //error
                 }
             }
-            
         } else {
             let params = ["status": self.tweetTextView.text!]
             self.vc.postTweet(params: params, url: url, completion: { (error) in
@@ -91,7 +100,6 @@ class CreateTweetsViewController: UIViewController, UIAlertViewDelegate, UIImage
                 }
             })
         }
-        
     }
     
     @IBAction func closeCreateTweetForm(_ sender: Any) {

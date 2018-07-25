@@ -185,8 +185,6 @@ class TwitterRestApi: UIViewController {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {
             let client = TWTRAPIClient(userID: userID)
             var clientError : NSError?
-//            let params = ["description": "hello world!", "name": "Huancaoz"]
-            
             let request = client.urlRequest(withMethod: "POST", urlString: url, parameters: params, error: &clientError)
             client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
                 if connectionError != nil {
@@ -195,6 +193,13 @@ class TwitterRestApi: UIViewController {
                     completion("ok")
                 }
             }
+        }
+    }
+    
+    func logout() {
+        let store = TWTRTwitter.sharedInstance().sessionStore
+        if let userID = store.session()?.userID {
+            store.logOutUserID(userID)
         }
     }
     

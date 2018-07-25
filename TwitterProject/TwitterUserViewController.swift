@@ -23,13 +23,14 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userScreenNameLabel: UILabel!
     @IBOutlet weak var headerScrollView: UIScrollView!
-    
-    
+    @IBOutlet weak var followingLabel: UILabel!
+    @IBOutlet weak var followersLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     var retweetNameBtn: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addRightBarButton()
         
         headerScrollView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -43,43 +44,38 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
         
-        //create button in rightbar
-        let rightButtonItem = UIBarButtonItem.init(
-            title: "Tweet",
-            style: .done,
-            target: self,
-            action: #selector(tweet(sender:))
-        )
-        
-        if self.navigationController != nil {
-            self.navigationItem.rightBarButtonItem = rightButtonItem
-        }
-        
         //pull-to-refresh
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControlEvents.valueChanged)
         tableView.addSubview(refreshControl)
         
-        
         getUserInformation { (result) in
             if let userInfo = result {
-                print(userInfo)
-                
                 let bannerUrl = userInfo.profile_banner_url
                 self.userBannerImageView.sd_setImage(with: NSURL(string: bannerUrl)! as URL)
                 self.userProfileImageView.sd_setImage(with: NSURL(string: userInfo.profile_image_url)! as URL)
-                
                 self.userNameLabel.text = userInfo.name
                 self.userScreenNameLabel.text = "@" + userInfo.screen_name
+                self.followingLabel.text = userInfo.friends_count
+                self.followersLabel.text = userInfo.followers_count
             } else {
                 print("error")
             }
         }
-
+    }
+    
+    //create button in rightbar
+    func addRightBarButton() {
+        let rightButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(createTweetAction))
+        navigationItem.rightBarButtonItem = rightButtonItem
+    }
+    
+    @IBAction func createTweetAction(sender: UIBarButtonItem) {
+        let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "postTweetViewController"))!
+        self.present(viewController, animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        self.navigationController?.title = "dfghj"
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
     }
@@ -87,6 +83,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.tintColor = self.view.tintColor
     }
     
     @objc func refresh(sender:AnyObject) {
@@ -201,22 +198,15 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
         if offset > 1 {
             offset = 1
             let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
-            self.navigationController?.navigationBar.tintColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = self.view.tintColor
             self.navigationController?.navigationBar.backgroundColor = color
             UIApplication.shared.statusBar?.backgroundColor = color
         } else {
             let color = UIColor(red: 1, green: 1, blue: 1, alpha: offset)
-            self.navigationController?.navigationBar.tintColor = UIColor(red: 0, green: 0, blue: 1, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = self.view.tintColor
             self.navigationController?.navigationBar.backgroundColor = color
             UIApplication.shared.statusBar?.backgroundColor = color
         }
-
-    }
-    
-    @objc func tweet(sender: UIBarButtonItem) {
-        let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "postTweetViewController"))!
-        self.present(viewController, animated: true, completion: nil)
-        
     }
 
     func retweet(id: String) {
@@ -256,11 +246,8 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
     
     
     @IBAction func profileEditAction(_ sender: Any) {
-//        let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "profileEdit"))!
-//        self.present(viewController, animated: true, completion: nil)
         guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "profileEdit") else { return }
         let navController = UINavigationController(rootViewController: myVC)
-        
         self.present(navController, animated: true, completion: nil)
     }
     
