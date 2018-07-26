@@ -39,16 +39,24 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     }
     
     @IBAction func logout(_ sender: Any) {
-        self.logout()
-                let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "welcome"))!
-                self.present(viewController, animated: false, completion: nil)
+        let alert = UIAlertController(title: "Logout", message: "Would you like to logout Twitter?", preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (result) in
+            self.logout()
+            let viewController:UIViewController = (self.storyboard?.instantiateViewController(withIdentifier: "welcome"))!
+            self.present(viewController, animated: false, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
     }
     
     @IBAction func onTapUserBarbutton(_ sender: Any) {
         let viewController = self.storyboard?.instantiateViewController(withIdentifier: "user")
         self.navigationController?.pushViewController(viewController!, animated: false)
     }
-    
     
     func refresh() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -71,7 +79,6 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
-        
         let profileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
         cell.profileImageView.layer.borderWidth = 1.0
         cell.profileImageView.layer.masksToBounds = false
@@ -79,7 +86,6 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.width / 2
         cell.profileImageView.clipsToBounds = true
         cell.profileImageView.sd_setImage(with: NSURL(string: profileUrlImage!)! as URL)
-        
         cell.label.text = self.tweetsData[indexPath.row]["text"]
         cell.name.text = self.tweetsData[indexPath.row]["name"]
         cell.scNameLabel.text = self.tweetsData[indexPath.row]["screen_name"]
@@ -173,12 +179,6 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
-    
-//    @objc func userView(sender: UIBarButtonItem) {
-//        let viewController = self.storyboard?.instantiateViewController(withIdentifier: "user")
-//        self.navigationController?.pushViewController(viewController!, animated: false)
-//    }
-    
 }
 
 

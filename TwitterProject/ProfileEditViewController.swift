@@ -11,7 +11,6 @@ import UIKit
 import SDWebImage
 
 class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
-    
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -27,28 +26,23 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
         
         self.getUserInformation { (result) in
             if let userInfo = result {
-                print(userInfo)
-                
                 let bannerUrl = userInfo.profile_banner_url
                 self.bannerImageView.sd_setImage(with: NSURL(string: bannerUrl)! as URL)
                 self.avatarImageView.sd_setImage(with: NSURL(string: userInfo.profile_image_url)! as URL)
-                
                 self.nameTextField.text = userInfo.name
                 self.urlTextField.placeholder = "Add your website url"
-                
             } else {
                 print("error")
             }
         }
-
-        
         leftBarItemCreate()
         rightBarItemCreate()
         
         nameTextField.addTarget(self, action: #selector(nameTextFieldDidChange(sender:)), for: UIControlEvents.editingChanged)
-        
         urlTextField.addTarget(self, action: #selector(textFieldDidChange(sender:)), for: UIControlEvents.editingChanged)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     @objc func nameTextFieldDidChange(sender: UITextField) {
         self.navigationItem.rightBarButtonItem?.isEnabled = true
@@ -58,9 +52,16 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
         self.navigationItem.rightBarButtonItem?.isEnabled = true
     }
     
-    
     @objc func textFieldDidChange(sender: UITextField) {
         self.navigationItem.rightBarButtonItem?.isEnabled = true
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        self.view.frame.origin.y = -200 // Move view 150 points upward
+    }
+    
+    @objc func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0 // Move view to original position
     }
     
     func leftBarItemCreate() {
