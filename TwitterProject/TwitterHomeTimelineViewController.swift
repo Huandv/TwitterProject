@@ -160,7 +160,10 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         
         alert.addAction(retweetAction)
         alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true) {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlert(sender:)) )
+            alert.view.superview?.subviews[0].addGestureRecognizer(tapGesture)
+        }
     }
     func unretweet(id: String) {
         let alert = UIAlertController()
@@ -177,7 +180,14 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         
         alert.addAction(retweetAction)
         alert.addAction(cancelAction)
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true) {
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlert(sender:)) )
+            alert.view.superview?.subviews[0].addGestureRecognizer(tapGesture)
+        }
+    }
+    
+    @objc func dismissAlert(sender:AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

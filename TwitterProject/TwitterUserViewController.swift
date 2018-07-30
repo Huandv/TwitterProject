@@ -127,7 +127,10 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
             let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
             alert.addAction(deleteAction)
             alert.addAction(cancelAction)
-            self.present(alert, animated: true, completion: nil)
+            self.present(alert, animated: true) {
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissAlert(sender:)) )
+                alert.view.superview?.subviews[0].addGestureRecognizer(tapGesture)
+            }
         }
         
         //get id when tap retweet button
@@ -251,7 +254,9 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
         self.present(navController, animated: true, completion: nil)
     }
     
-    
+    @objc func dismissAlert(sender:AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+    }
     
 }
 
