@@ -97,7 +97,7 @@
                                                         <constraint firstAttribute="height" constant="15" id="Mhn-Rs-VPy"/>
                                                         <constraint firstAttribute="width" constant="15" id="YfP-bj-4BC"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="love-icon"/>
+                                                    <state key="normal" backgroundImage="11"/>
                                                     <connections>
                                                         <action selector="onTapLikeHomeBtn:" destination="Oan-Qp-AEI" eventType="touchUpInside" id="q3G-ek-IVk"/>
                                                     </connections>
@@ -121,7 +121,7 @@
                                                         <constraint firstAttribute="height" constant="18" id="Zt1-a5-YKN"/>
                                                         <constraint firstAttribute="width" constant="18" id="lGd-mq-2bS"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="retweet">
+                                                    <state key="normal" backgroundImage="retwIcon">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
@@ -349,7 +349,7 @@
                                                         <constraint firstAttribute="width" constant="15" id="W3H-HX-BMV"/>
                                                         <constraint firstAttribute="height" constant="15" id="iMK-pi-aKR"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="love-icon">
+                                                    <state key="normal" backgroundImage="11">
                                                         <color key="titleColor" red="0.97431590025906734" green="0.97431590025906734" blue="0.97431590025906734" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
@@ -375,7 +375,7 @@
                                                         <constraint firstAttribute="width" constant="15" id="bdI-Du-rkG"/>
                                                         <constraint firstAttribute="height" constant="15" id="lKr-4A-oY0"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="retweet">
+                                                    <state key="normal" backgroundImage="retwIcon">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
@@ -707,12 +707,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="11" width="30" height="30"/>
         <image name="avatar" width="352" height="352"/>
         <image name="bg" width="960" height="539"/>
         <image name="camera" width="40" height="40"/>
         <image name="logout" width="25" height="25"/>
-        <image name="love-icon" width="30" height="30"/>
-        <image name="retweet" width="30" height="30"/>
+        <image name="retwIcon" width="30" height="30"/>
         <image name="tw-icon" width="256" height="256"/>
         <image name="user" width="25" height="25"/>
     </resources>

@@ -101,12 +101,12 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         }
         
         cell.onTapLikeHomeButton = { id, likeBtn in
-            if ( likeBtn.image(for: .normal) == #imageLiteral(resourceName: "love-icon") ) {
+            if ( likeBtn.image(for: .normal) == #imageLiteral(resourceName: "11") ) {
                 //like
                 let url = "https://api.twitter.com/1.1/favorites/create.json"
                 self.likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        likeBtn.setImage(#imageLiteral(resourceName: "liked"), for: .normal)
+                        likeBtn.setImage(#imageLiteral(resourceName: "1"), for: .normal)
                     } else {
                         //error
                     }
@@ -116,7 +116,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
                 let url = "https://api.twitter.com/1.1/favorites/destroy.json"
                 self.likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        likeBtn.setImage(#imageLiteral(resourceName: "love-icon"), for: .normal)
+                        likeBtn.setImage(#imageLiteral(resourceName: "11"), for: .normal)
                     } else {
                         //error
                     }
@@ -125,17 +125,18 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         }
         cell.onTapRetweetHomeButton = { id, retweetBtn in
             self.retweetNameBtn = retweetBtn
-            if retweetBtn.backgroundImage(for: .normal) == #imageLiteral(resourceName: "retweet") {
+            if retweetBtn.backgroundImage(for: .normal) == #imageLiteral(resourceName: "retwIcon") {
                 self.retweet(id: id)
             } else {
                 self.unretweet(id: id)
             }
         }
         
-        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "liked") : #imageLiteral(resourceName: "love-icon")
+//        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "liked") : #imageLiteral(resourceName: "love-icon")
+        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "1") : #imageLiteral(resourceName: "11")
         cell.likeHomeButton.setImage(likeImg, for: .normal)
 
-        let retweetImg = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "unrt") : #imageLiteral(resourceName: "retweet")
+        let retweetImg = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
         cell.retweetHomeButton.setBackgroundImage(retweetImg, for: .normal)
 
         return cell
@@ -150,7 +151,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
             self.retweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "unrt"), for: .normal)
+                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "r1"), for: .normal)
                 } else {
                     //error
                 }
@@ -170,7 +171,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
             self.unretweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "retweet"), for: .normal)
+                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "retwIcon"), for: .normal)
                 } else {
                     //error
                 }
