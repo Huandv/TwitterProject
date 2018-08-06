@@ -17,7 +17,7 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var urlTextField: UITextField!
     
-    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
+//    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,21 +100,16 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
     }
     
     @objc func saveChanged(sender: UIBarButtonItem) {
-        activityIndicator.center = self.view.center
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        view.addSubview(activityIndicator)
-        
-        activityIndicator.startAnimating()
+        self.dismissKeyboard()
+        self.showIndicator(message: nil)
         
         let params = ["name": nameTextField.text!, "description": descriptionTextView.text!, "url": urlTextField.text!]
         self.profileEdit(params: params) { (result) in
             if let _ = result {
                 sleep(2)
-                self.activityIndicator.stopAnimating()
                 NotificationCenter.default.post(name: .refreshTweet, object: nil)
+                self.hideIndicator()
                 self.dismiss(animated: true, completion: nil)
-                
             } else {
                 print("error")
             }

@@ -66,6 +66,8 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
         let url = "https://api.twitter.com/1.1/statuses/update.json"
         let textTweet = isTextViewEdited ? tweetTextView.text : ""
         
+        self.showIndicator(message: nil)
+        
         if let imgData = imgView.image {
             let tweetImage: Data? = UIImageJPEGRepresentation(imgData, 1)!
             vc.postIMG(image: tweetImage) { (result) in
@@ -79,6 +81,8 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
                             }))
                             self.present(alert, animated: true, completion: nil)
                         } else {
+                            sleep(2)
+                            self.hideIndicator()
                             NotificationCenter.default.post(name: .refreshTweet, object: nil)
                             self.dismiss(animated: true, completion: nil)
                         }
@@ -97,6 +101,8 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
                     }))
                     self.present(alert, animated: true, completion: nil)
                 } else {
+                    sleep(2)
+                    self.hideIndicator()
                     NotificationCenter.default.post(name: .refreshTweet, object: nil)
                     self.dismiss(animated: true, completion: nil)
                 }
@@ -134,8 +140,4 @@ extension CreateTweetsViewController: UITextViewDelegate {
         }
     }
 }
-
-//extension Notification.Name {
-//    static let refreshTweet = Notification.Name("refreshTweet")
-//}
 

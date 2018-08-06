@@ -5,4 +5,5 @@ target 'TwitterProject' do
     pod 'Alamofire', '~> 4.7'
     pod 'Unbox'
     pod 'SDWebImage', '~> 4.0'
+    pod 'NVActivityIndicatorView'
 end

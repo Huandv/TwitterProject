@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import TwitterKit
 import Unbox
+import NVActivityIndicatorView
 
 class TwitterRestApi: UIViewController {
     var tweetsData = [[String : String]]()
@@ -201,6 +202,24 @@ class TwitterRestApi: UIViewController {
         }
     }
     
+    
+    func showIndicator(message: String?) {
+        let data = ActivityData(size: CGSize(width: 30, height: 30),
+                                message: message,
+                                messageFont: nil,
+                                type: .ballBeat,
+                                color: nil,
+                                padding: nil,
+                                displayTimeThreshold: nil,
+                                minimumDisplayTime: 0,
+                                backgroundColor: nil,
+                                textColor: nil)
+        NVActivityIndicatorPresenter.sharedInstance.startAnimating(data)
+    }
+    
+    func hideIndicator() {
+        NVActivityIndicatorPresenter.sharedInstance.stopAnimating()
+    }
 }
 
 
