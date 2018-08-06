@@ -14,17 +14,17 @@ import Unbox
 class TwitterRestApi: UIViewController {
     var tweetsData = [[String : String]]()
     
-    func getFeed(requestUrl: String, completion: @escaping (String?) -> () ) {
+    func getFeed(requestUrl: String, completion: @escaping ([[String : String]]) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {            
             let client = TWTRAPIClient(userID: userID)
-            let params = ["user_id": userID, "count": "50"]
+            let params = ["user_id": userID, "count": "100"]
             var clientError : NSError?
             
             let request = client.urlRequest(withMethod: "GET", urlString: requestUrl, parameters: params, error: &clientError)
             client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
                 if connectionError != nil {
                     print("Error: \(String(describing: connectionError))")
-                    completion("nil")
+                    completion([])
                 }
                 do {
                     let models: [TweetData] = try unbox(data: data!)
@@ -43,7 +43,7 @@ class TwitterRestApi: UIViewController {
                         }
                         self.tweetsData.append(termArr)
                     }
-                    completion("OK")
+                    completion(self.tweetsData)
                 } catch let jsonError as NSError {
                     print("json error: \(jsonError.localizedDescription)")
                 }

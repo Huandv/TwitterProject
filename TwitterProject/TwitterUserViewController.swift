@@ -16,52 +16,41 @@ import SDWebImage
 private let userTimelineRestUrl = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
 class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate, UIAlertViewDelegate {
-    
     private var refreshControl = UIRefreshControl()
-    @IBOutlet weak var userBannerImageView: UIImageView!
-    @IBOutlet weak var userProfileImageView: UIImageView!
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var userScreenNameLabel: UILabel!
-    @IBOutlet weak var headerScrollView: UIScrollView!
-    @IBOutlet weak var followingLabel: UILabel!
-    @IBOutlet weak var followersLabel: UILabel!
+    var tweetData = [[String : String]]()
+
     @IBOutlet weak var tableView: UITableView!
     var retweetNameBtn: UIButton?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addRightBarButton()
+        getData()
         
-        headerScrollView.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
-            if let _ = result {
-                self.tableView.reloadData()
-            } else {
-                //error
-            }
-        }
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
+        
+        // notification listener
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshDataByNotification), name: .refreshTweet, object: nil)
         
         //pull-to-refresh
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh(sender:)), for: UIControlEvents.valueChanged)
         tableView.addSubview(refreshControl)
-        
-        getUserInformation { (result) in
-            if let userInfo = result {
-                let bannerUrl = userInfo.profile_banner_url
-                self.userBannerImageView.sd_setImage(with: NSURL(string: bannerUrl)! as URL)
-                self.userProfileImageView.sd_setImage(with: NSURL(string: userInfo.profile_image_url)! as URL)
-                self.userNameLabel.text = userInfo.name
-                self.userScreenNameLabel.text = "@" + userInfo.screen_name
-                self.followingLabel.text = userInfo.friends_count
-                self.followersLabel.text = userInfo.followers_count
-            } else {
-                print("error")
+    }
+    
+    func getData() {
+        self.tweetsData.removeAll()
+        self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
+            if !result.isEmpty {
+                self.tweetData = result
+                self.tableView.reloadData()
             }
         }
+    }
+    
+    @objc func refreshDataByNotification()  {
+        getData()
     }
     
     //create button in rightbar
@@ -87,22 +76,38 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
     }
     
     @objc func refresh(sender:AnyObject) {
-        self.tweetsData.removeAll()
-        self.getFeed(requestUrl: userTimelineRestUrl) { (result) in
-            if let _ = result {
-                self.tableView.reloadData()
+        getData()
+        refreshControl.endRefreshing()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerTable = Bundle.main.loadNibNamed("newTableViewCell", owner: self, options: nil)?.first as! newTableViewCell
+
+        getUserInformation { (result) in
+            if let userInfo = result {
+                let bannerUrl = userInfo.profile_banner_url
+                headerTable.bannerImageView.sd_setImage(with: NSURL(string: bannerUrl)! as URL)
+                headerTable.avatarImageView.sd_setImage(with: NSURL(string: userInfo.profile_image_url)! as URL)
+                headerTable.nameLabel.text = userInfo.name
+                headerTable.screenNameLabel.text = "@" + userInfo.screen_name
+                headerTable.folowingLabel.text = userInfo.friends_count
+                headerTable.followersLabel.text = userInfo.followers_count
             } else {
-                //error
+                print("error")
             }
         }
-        self.tableView.reloadData()
-        refreshControl.endRefreshing()
+        headerTable.profileEditButton.addTarget(self, action: #selector(profileEditAction(sender:)), for: .touchUpInside)
+        
+        return headerTable
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 264.5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! TableViewCell
-        
-        let userProfileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
+        let userProfileUrlImage = tweetData[indexPath.row]["profile_image_url"]
         cell.userProfileImageView.layer.borderWidth = 1.0
         cell.userProfileImageView.layer.masksToBounds = false
         cell.userProfileImageView.layer.borderColor = UIColor.white.cgColor
@@ -110,19 +115,25 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
         cell.userProfileImageView.clipsToBounds = true
         cell.userProfileImageView.sd_setImage(with: NSURL(string: userProfileUrlImage!)! as URL)
         
-        cell.usernameLabel.text = self.tweetsData[indexPath.row]["name"]
-        cell.userscNameLabel.text = self.tweetsData[indexPath.row]["screen_name"]
-        cell.usertweetsLabel.text = self.tweetsData[indexPath.row]["text"]
-        cell.id = self.tweetsData[indexPath.row]["tweetId"]!
+        cell.usernameLabel.text = tweetData[indexPath.row]["name"]
+        cell.userscNameLabel.text = tweetData[indexPath.row]["screen_name"]
+        cell.usertweetsLabel.text = tweetData[indexPath.row]["text"]
+        cell.id = tweetData[indexPath.row]["tweetId"]!
         
         //get id when tap more button
         cell.onTapMoreButton = { id in
             let alert = UIAlertController()
             let deleteAction = UIAlertAction(title: "Delete Tweet", style: .default, handler: { (action) -> Void in
                 TwitterRestApi().deleteTweet(id: id)
-                self.refresh(sender: AnyObject.self as AnyObject)
+
+                self.tweetData.remove(at: indexPath.row)
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
+                self.tableView.reloadData()
+
             })
-            
+
             // Cancel button
             let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: { (action) -> Void in })
             alert.addAction(deleteAction)
@@ -167,7 +178,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
                 })
             }
         }
-        if let url = self.tweetsData[indexPath.row]["url"] {
+        if let url = tweetData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
             cell.userImgHeightLayoutConstraint.constant = 131
             cell.userImgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage"))
@@ -176,26 +187,23 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
             cell.userImgView.image = nil
         }
         
-        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "1") : #imageLiteral(resourceName: "11")
+        let likeImg = (tweetData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "1") : #imageLiteral(resourceName: "11")
         cell.likeUserButton.setBackgroundImage(likeImg, for: .normal)
         
-        let retweetImg = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
+        let retweetImg = (tweetData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
         cell.retweetUserButton.setBackgroundImage(retweetImg, for: .normal)
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tweetsData.count
+        return tweetData.count
     }
-    
-    @IBOutlet weak var topLayoutConstraint: NSLayoutConstraint!
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        topLayoutConstraint.constant = -position
         
-        self.navigationController?.navigationBar.topItem?.title = (position != 0) ?  "User Timeline" : nil
+        self.navigationController?.navigationBar.topItem?.title = (position > 0) ?  "User Timeline" : nil
         
         var offset = scrollView.contentOffset.y / 150
         if offset > 1 {
@@ -247,8 +255,7 @@ class TwitterUserViewController: TwitterRestApi , UITableViewDataSource, UITable
         present(alert, animated: true, completion: nil)
     }
     
-    
-    @IBAction func profileEditAction(_ sender: Any) {
+    @objc func profileEditAction(sender: AnyObject) {
         guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "profileEdit") else { return }
         let navController = UINavigationController(rootViewController: myVC)
         self.present(navController, animated: true, completion: nil)

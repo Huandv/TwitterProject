@@ -21,21 +21,32 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     var retweetNameBtn: UIButton?
     @IBOutlet weak var tableView: UITableView!
     
+    var tweetData = [[String : String]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
-        self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
-            if let _ = result {
-                self.tableView.reloadData()
-            } else {
-                //error
-            }
-        }
+        getData()
+        NotificationCenter.default.addObserver(self, selector: #selector(refreshByNotification), name: .refreshTweet, object: nil)
+        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200
 
         refresh()
+    }
+    
+    func getData() {
+        self.tweetsData.removeAll()
+        self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
+            if !result.isEmpty {
+                self.tweetData = result
+                self.tableView.reloadData()
+            }
+        }
+    }
+    @objc func refreshByNotification() {
+        getData()
     }
     
     @IBAction func logout(_ sender: Any) {
@@ -65,33 +76,25 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     }
     
     @objc func refresh(sender:AnyObject) {
-        self.tweetsData.removeAll()
-        self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
-            if let _ = result {
-                self.tableView.reloadData()
-            } else {
-                //error
-            }
-        }
-        self.tableView.reloadData()
+        getData()
         refreshControl.endRefreshing()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
-        let profileUrlImage = self.tweetsData[indexPath.row]["profile_image_url"]
+        let profileUrlImage = tweetData[indexPath.row]["profile_image_url"]
         cell.profileImageView.layer.borderWidth = 1.0
         cell.profileImageView.layer.masksToBounds = false
         cell.profileImageView.layer.borderColor = UIColor.white.cgColor
         cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.width / 2
         cell.profileImageView.clipsToBounds = true
         cell.profileImageView.sd_setImage(with: NSURL(string: profileUrlImage!)! as URL)
-        cell.label.text = self.tweetsData[indexPath.row]["text"]
-        cell.name.text = self.tweetsData[indexPath.row]["name"]
-        cell.scNameLabel.text = self.tweetsData[indexPath.row]["screen_name"]
-        cell.id = self.tweetsData[indexPath.row]["tweetId"]!
+        cell.label.text = tweetData[indexPath.row]["text"]
+        cell.name.text = tweetData[indexPath.row]["name"]
+        cell.scNameLabel.text = tweetData[indexPath.row]["screen_name"]
+        cell.id = tweetData[indexPath.row]["tweetId"]!
         
-        if let url = self.tweetsData[indexPath.row]["url"] {
+        if let url = tweetData[indexPath.row]["url"] {
             let imgUrl = NSURL(string: url)
             cell.imageHeightLayoutConstraint.constant = 131
             cell.imgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage"))
@@ -132,18 +135,17 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
             }
         }
         
-//        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "liked") : #imageLiteral(resourceName: "love-icon")
-        let likeImg = (self.tweetsData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "1") : #imageLiteral(resourceName: "11")
+        let likeImg = (tweetData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "1") : #imageLiteral(resourceName: "11")
         cell.likeHomeButton.setImage(likeImg, for: .normal)
 
-        let retweetImg = (self.tweetsData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
+        let retweetImg = (tweetData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
         cell.retweetHomeButton.setBackgroundImage(retweetImg, for: .normal)
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.tweetsData.count
+        return tweetData.count
     }
     
     func retweet(id: String) {
@@ -151,6 +153,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
             self.retweetTweet(id: id, completion: { (result) in
                 if let _ = result {
+                    print(1)
                     self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "r1"), for: .normal)
                 } else {
                     //error

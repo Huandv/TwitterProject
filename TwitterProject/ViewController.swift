@@ -23,6 +23,7 @@ class ViewController: TwitterRestApi {
             guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "home") else { return }
             let navController = UINavigationController(rootViewController: myVC)
             self.present(navController, animated: false, completion: nil)
+            
         } else {
             login()
         }
@@ -59,4 +60,7 @@ extension UIViewController {
     }
 }
 
+extension Notification.Name {
+    static let refreshTweet = Notification.Name("refreshTweet")
+}
 

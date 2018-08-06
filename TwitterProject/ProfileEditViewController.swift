@@ -112,12 +112,15 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
             if let _ = result {
                 sleep(2)
                 self.activityIndicator.stopAnimating()
+                NotificationCenter.default.post(name: .refreshTweet, object: nil)
                 self.dismiss(animated: true, completion: nil)
                 
             } else {
                 print("error")
             }
         }
-        
     }
 }
+
+
+

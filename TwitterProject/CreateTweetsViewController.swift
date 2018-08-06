@@ -79,6 +79,7 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
                             }))
                             self.present(alert, animated: true, completion: nil)
                         } else {
+                            NotificationCenter.default.post(name: .refreshTweet, object: nil)
                             self.dismiss(animated: true, completion: nil)
                         }
                     })
@@ -96,6 +97,7 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
                     }))
                     self.present(alert, animated: true, completion: nil)
                 } else {
+                    NotificationCenter.default.post(name: .refreshTweet, object: nil)
                     self.dismiss(animated: true, completion: nil)
                 }
             })
@@ -133,5 +135,7 @@ extension CreateTweetsViewController: UITextViewDelegate {
     }
 }
 
-
+//extension Notification.Name {
+//    static let refreshTweet = Notification.Name("refreshTweet")
+//}
 
