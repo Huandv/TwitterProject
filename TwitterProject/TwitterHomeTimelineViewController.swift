@@ -128,7 +128,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         }
         cell.onTapRetweetHomeButton = { id, retweetBtn in
             self.retweetNameBtn = retweetBtn
-            if retweetBtn.backgroundImage(for: .normal) == #imageLiteral(resourceName: "retwIcon") {
+            if retweetBtn.image(for: .normal) == #imageLiteral(resourceName: "retwIcon") {
                 self.retweet(id: id)
             } else {
                 self.unretweet(id: id)
@@ -139,7 +139,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         cell.likeHomeButton.setImage(likeImg, for: .normal)
 
         let retweetImg = (tweetData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
-        cell.retweetHomeButton.setBackgroundImage(retweetImg, for: .normal)
+        cell.retweetHomeButton.setImage(retweetImg, for: .normal)
 
         return cell
     }
@@ -153,8 +153,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
             self.retweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    print(1)
-                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "r1"), for: .normal)
+                    self.retweetNameBtn?.setImage(#imageLiteral(resourceName: "r1"), for: .normal)
                 } else {
                     //error
                 }
@@ -174,7 +173,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
             self.unretweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setBackgroundImage(#imageLiteral(resourceName: "retwIcon"), for: .normal)
+                    self.retweetNameBtn?.setImage(#imageLiteral(resourceName: "retwIcon"), for: .normal)
                 } else {
                     //error
                 }

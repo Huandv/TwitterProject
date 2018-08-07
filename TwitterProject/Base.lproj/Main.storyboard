@@ -72,7 +72,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="240" id="Oan-Qp-AEI" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="240" id="Oan-Qp-AEI" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="240"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Oan-Qp-AEI" id="Ewd-xf-sm2">
@@ -97,7 +97,8 @@
                                                         <constraint firstAttribute="height" constant="15" id="Mhn-Rs-VPy"/>
                                                         <constraint firstAttribute="width" constant="15" id="YfP-bj-4BC"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="11"/>
+                                                    <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="1"/>
+                                                    <state key="normal" image="11"/>
                                                     <connections>
                                                         <action selector="onTapLikeHomeBtn:" destination="Oan-Qp-AEI" eventType="touchUpInside" id="q3G-ek-IVk"/>
                                                     </connections>
@@ -115,13 +116,13 @@
                                                         <constraint firstAttribute="width" constant="40" id="yb4-rQ-eSa"/>
                                                     </constraints>
                                                 </imageView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sE-hf-0h5">
-                                                    <rect key="frame" x="125" y="202" width="30" height="20"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sE-hf-0h5">
+                                                    <rect key="frame" x="125" y="201.5" width="30" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="Zt1-a5-YKN"/>
                                                         <constraint firstAttribute="width" constant="30" id="lGd-mq-2bS"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="retwIcon">
+                                                    <state key="normal" image="retwIcon">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
@@ -221,7 +222,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell1" rowHeight="227" id="u0O-R3-37t" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell1" rowHeight="227" id="u0O-R3-37t" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="320" height="227"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u0O-R3-37t" id="DsL-LA-SMC">
@@ -246,13 +247,13 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="19f-uM-fmO">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="19f-uM-fmO">
                                                     <rect key="frame" x="70" y="203.5" width="15" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="DGw-kf-fZ0"/>
                                                         <constraint firstAttribute="width" constant="15" id="udy-cG-27I"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="11">
+                                                    <state key="normal" image="11">
                                                         <color key="titleColor" red="0.97431590025906734" green="0.97431590025906734" blue="0.97431590025906734" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
@@ -282,13 +283,13 @@
                                                         <action selector="onTapBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="HAl-ij-1xz"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NKp-gJ-6Sb">
-                                                    <rect key="frame" x="125" y="201" width="30" height="20"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NKp-gJ-6Sb">
+                                                    <rect key="frame" x="125" y="200.5" width="30" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="PTw-zo-72h"/>
                                                         <constraint firstAttribute="height" constant="20" id="Wb6-Dl-dh8"/>
                                                     </constraints>
-                                                    <state key="normal" backgroundImage="retwIcon">
+                                                    <state key="normal" image="retwIcon">
                                                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
