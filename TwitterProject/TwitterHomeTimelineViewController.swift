@@ -18,10 +18,9 @@ private let homeTimelineRestUrl = "https://api.twitter.com/1.1/statuses/home_tim
 
 class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource {
     private var refreshControl = UIRefreshControl()
-    var retweetNameBtn: UIButton?
     @IBOutlet weak var tableView: UITableView!
     
-    var tweetData = [[String : String]]()
+    var tweetData: [TweetData] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,34 +81,17 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! TableViewCell
-        let profileUrlImage = tweetData[indexPath.row]["profile_image_url"]
-        cell.profileImageView.layer.borderWidth = 1.0
-        cell.profileImageView.layer.masksToBounds = false
-        cell.profileImageView.layer.borderColor = UIColor.white.cgColor
-        cell.profileImageView.layer.cornerRadius = cell.profileImageView.frame.size.width / 2
-        cell.profileImageView.clipsToBounds = true
-        cell.profileImageView.sd_setImage(with: NSURL(string: profileUrlImage!)! as URL)
-        cell.label.text = tweetData[indexPath.row]["text"]
-        cell.name.text = tweetData[indexPath.row]["name"]
-        cell.scNameLabel.text = tweetData[indexPath.row]["screen_name"]
-        cell.id = tweetData[indexPath.row]["tweetId"]!
-        
-        if let url = tweetData[indexPath.row]["url"] {
-            let imgUrl = NSURL(string: url)
-            cell.imageHeightLayoutConstraint.constant = 131
-            cell.imgView.sd_setImage(with: imgUrl! as URL, placeholderImage: UIImage(named: "placeholderImage"))
-        } else {
-            cell.imgView.image = nil
-            cell.imageHeightLayoutConstraint.constant = 0
-        }
-        
+        cell.updateUI(tweet: tweetData[indexPath.row], indexPath: indexPath)
+
         cell.onTapLikeHomeButton = { id, likeBtn in
-            if ( likeBtn.image(for: .normal) == #imageLiteral(resourceName: "11") ) {
+            if self.tweetData[indexPath.row].isLiked == "0" {
                 //like
                 let url = "https://api.twitter.com/1.1/favorites/create.json"
                 self.likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        likeBtn.setImage(#imageLiteral(resourceName: "1"), for: .normal)
+                        self.tweetData[indexPath.row].isLiked = "1"
+                        self.tweetData[indexPath.row].favorite_count += 1
+                        self.tableView.reloadRows(at: [indexPath], with: .automatic)
                     } else {
                         //error
                     }
@@ -119,7 +101,9 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
                 let url = "https://api.twitter.com/1.1/favorites/destroy.json"
                 self.likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        likeBtn.setImage(#imageLiteral(resourceName: "11"), for: .normal)
+                        self.tweetData[indexPath.row].isLiked = "0"
+                        self.tweetData[indexPath.row].favorite_count -= 1
+                        self.tableView.reloadRows(at: [indexPath], with: .automatic)
                     } else {
                         //error
                     }
@@ -127,20 +111,13 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
             }
         }
         cell.onTapRetweetHomeButton = { id, retweetBtn in
-            self.retweetNameBtn = retweetBtn
-            if retweetBtn.image(for: .normal) == #imageLiteral(resourceName: "retwIcon") {
-                self.retweet(id: id)
+            if self.tweetData[indexPath.row].isRetweeted == "0" {
+                self.retweet(id: id, indexPath: indexPath)
             } else {
-                self.unretweet(id: id)
+                self.unretweet(id: id, indexPath: indexPath)
             }
         }
         
-        let likeImg = (tweetData[indexPath.row]["isLiked"] == "1") ? #imageLiteral(resourceName: "1") : #imageLiteral(resourceName: "11")
-        cell.likeHomeButton.setImage(likeImg, for: .normal)
-
-        let retweetImg = (tweetData[indexPath.row]["isRetweeted"] == "1") ? #imageLiteral(resourceName: "r1") : #imageLiteral(resourceName: "retwIcon")
-        cell.retweetHomeButton.setImage(retweetImg, for: .normal)
-
         return cell
     }
     
@@ -148,12 +125,14 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         return tweetData.count
     }
     
-    func retweet(id: String) {
+    func retweet(id: String, indexPath: IndexPath) {
         let alert = UIAlertController()
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
             self.retweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setImage(#imageLiteral(resourceName: "r1"), for: .normal)
+                    self.tweetData[indexPath.row].isRetweeted = "1"
+                    self.tweetData[indexPath.row].retweet_count += 1
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 } else {
                     //error
                 }
@@ -168,12 +147,15 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
             alert.view.superview?.subviews[0].addGestureRecognizer(tapGesture)
         }
     }
-    func unretweet(id: String) {
+    func unretweet(id: String, indexPath: IndexPath) {
         let alert = UIAlertController()
         let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
             self.unretweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.retweetNameBtn?.setImage(#imageLiteral(resourceName: "retwIcon"), for: .normal)
+                    self.tweetData[indexPath.row].isRetweeted = "0"
+                    self.tweetData[indexPath.row].retweet_count -= 1
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    
                 } else {
                     //error
                 }

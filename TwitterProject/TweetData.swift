@@ -11,14 +11,16 @@ import UIKit
 import Unbox
 
 struct TweetData {
-    let name: String
-    let screen_name: String
-    let text: String
-    let profile_image_url: String
-    let tweetId: String
-    let isLiked: String
-    let isRetweeted: String
-    let media_url: [Media]?
+    var name: String
+    var screen_name: String
+    var text: String
+    var profile_image_url: String
+    var tweetId: String
+    var isLiked: String
+    var isRetweeted: String
+    var media_url: [Media]?
+    var retweet_count : Int
+    var favorite_count : Int
 }
 
 extension TweetData: Unboxable {
@@ -31,11 +33,13 @@ extension TweetData: Unboxable {
         isLiked = try unboxer.unbox(key: "favorited")
         isRetweeted = try unboxer.unbox(key: "retweeted")
         media_url = unboxer.unbox(keyPath: "entities.media")
+        retweet_count = try unboxer.unbox(key: "retweet_count")
+        favorite_count = try unboxer.unbox(key: "favorite_count")
     }
 }
 
 struct Media: Unboxable {
-    let media_url: String?
+    var media_url: String?
     
     init(unboxer: Unboxer) {
         media_url = unboxer.unbox(key: "media_url")
