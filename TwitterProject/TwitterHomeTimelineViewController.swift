@@ -36,7 +36,6 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
     }
     
     func getData() {
-        self.tweetsData.removeAll()
         self.getFeed(requestUrl: homeTimelineRestUrl) { (result) in
             if !result.isEmpty {
                 self.tweetData = result
@@ -84,12 +83,12 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         cell.updateUI(tweet: tweetData[indexPath.row], indexPath: indexPath)
 
         cell.onTapLikeHomeButton = { id, likeBtn in
-            if self.tweetData[indexPath.row].isLiked == "0" {
+            if self.tweetData[indexPath.row].isLiked == 0 {
                 //like
                 let url = "https://api.twitter.com/1.1/favorites/create.json"
                 self.likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        self.tweetData[indexPath.row].isLiked = "1"
+                        self.tweetData[indexPath.row].isLiked = 1
                         self.tweetData[indexPath.row].favorite_count += 1
                         self.tableView.reloadRows(at: [indexPath], with: .automatic)
                     } else {
@@ -101,7 +100,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
                 let url = "https://api.twitter.com/1.1/favorites/destroy.json"
                 self.likeTweet(id: id, url: url, completion: { (result) in
                     if let _ = result {
-                        self.tweetData[indexPath.row].isLiked = "0"
+                        self.tweetData[indexPath.row].isLiked = 0
                         self.tweetData[indexPath.row].favorite_count -= 1
                         self.tableView.reloadRows(at: [indexPath], with: .automatic)
                     } else {
@@ -111,7 +110,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
             }
         }
         cell.onTapRetweetHomeButton = { id, retweetBtn in
-            if self.tweetData[indexPath.row].isRetweeted == "0" {
+            if self.tweetData[indexPath.row].isRetweeted == 0 {
                 self.retweet(id: id, indexPath: indexPath)
             } else {
                 self.unretweet(id: id, indexPath: indexPath)
@@ -130,7 +129,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "Retweet", style: .default, handler: { (action) -> Void in
             self.retweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.tweetData[indexPath.row].isRetweeted = "1"
+                    self.tweetData[indexPath.row].isRetweeted = 1
                     self.tweetData[indexPath.row].retweet_count += 1
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 } else {
@@ -152,7 +151,7 @@ class TwitterHomeTimelineViewController : TwitterRestApi, UITableViewDataSource 
         let retweetAction = UIAlertAction(title: "UnRetweet", style: .default, handler: { (action) -> Void in
             self.unretweetTweet(id: id, completion: { (result) in
                 if let _ = result {
-                    self.tweetData[indexPath.row].isRetweeted = "0"
+                    self.tweetData[indexPath.row].isRetweeted = 0
                     self.tweetData[indexPath.row].retweet_count -= 1
                     self.tableView.reloadRows(at: [indexPath], with: .automatic)
                     

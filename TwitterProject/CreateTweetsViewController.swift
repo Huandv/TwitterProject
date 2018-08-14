@@ -12,7 +12,6 @@ import TwitterKit
 
 class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     var imageIDUploaded: String? = nil
-    var vc = TwitterRestApi()
     var isTextViewEdited: Bool = false
     
     @IBOutlet weak var tweetTextView: UITextView!
@@ -40,7 +39,6 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
                 print("error")
             }
         }
-        
     }
     
     @IBAction func uploadImg(_ sender: Any) {
@@ -70,15 +68,16 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
         
         if let imgData = imgView.image {
             let tweetImage: Data? = UIImageJPEGRepresentation(imgData, 1)!
-            vc.postIMG(image: tweetImage) { (result) in
+            self.postIMG(image: tweetImage) { (result) in
                 if let imgId = result {
                     let params = ["status": textTweet!, "media_ids": imgId]
-                    self.vc.postTweet(params: params, url: url, completion: { (error) in
+                    self.postTweet(params: params, url: url, completion: { (error) in
                         if let _ = error {
                             let alert = UIAlertController(title: "Error", message: "You have already sent this Tweet.", preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
                                 print("ok")
                             }))
+                            self.hideIndicator()
                             self.present(alert, animated: true, completion: nil)
                         } else {
                             sleep(2)
@@ -93,12 +92,13 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
             }
         } else {
             let params = ["status": self.tweetTextView.text!]
-            self.vc.postTweet(params: params, url: url, completion: { (error) in
+            self.postTweet(params: params, url: url, completion: { (error) in
                 if let _ = error {
                     let alert = UIAlertController(title: "Error", message: "You have already sent this Tweet.", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (action) in
                         print("ok")
                     }))
+                    self.hideIndicator()
                     self.present(alert, animated: true, completion: nil)
                 } else {
                     sleep(2)
@@ -112,15 +112,6 @@ class CreateTweetsViewController: TwitterRestApi, UIAlertViewDelegate, UIImagePi
     
     @IBAction func closeCreateTweetForm(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    func nsDataToJson (data: Data) -> AnyObject? {
-        do {
-            return try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as AnyObject
-        } catch let myJSONError {
-            print(myJSONError)
-        }
-        return nil
     }
 }
 

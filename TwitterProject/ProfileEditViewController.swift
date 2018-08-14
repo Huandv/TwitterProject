@@ -17,8 +17,6 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var urlTextField: UITextField!
     
-//    var activityIndicator:UIActivityIndicatorView = UIActivityIndicatorView()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround()
@@ -88,7 +86,6 @@ class ProfileEditViewController: TwitterRestApi, UITextViewDelegate {
         let rightButtonItem = UIBarButtonItem.init(
             title: "Save",
             style: .done,
-            
             target: self,
             action: #selector(saveChanged(sender:))
         )

@@ -13,10 +13,6 @@ import Unbox
 import NVActivityIndicatorView
 
 class TwitterRestApi: UIViewController {
-    var tweetsData = [[String : String]]()
-    
-    var tweetsData1 : [TweetData]!
-    
     func getFeed(requestUrl: String, completion: @escaping ([TweetData]) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {            
             let client = TWTRAPIClient(userID: userID)
@@ -30,43 +26,12 @@ class TwitterRestApi: UIViewController {
                     completion([])
                 }
                 do {
-                    let models: [TweetData] = try unbox(data: data!)
-                    print(models)
-//                    for item in models {
-//                        var termArr = [String : String]()
-//                        var tweet: TweetData!
-//                        tweet.name = item.name
-//                        tweet.screen_name = item.screen_name
-//                        tweet.text = item.text
-//                        tweet.profile_image_url = item.profile_image_url
-//                        tweet.tweetId = item.tweetId
-//                        tweet.isLiked = item.isLiked
-//                        tweet.isRetweeted = item.isRetweeted
-//                        tweet.media_url = item.media_url ?? nil
-//                        tweet.retweet_count = item.retweet_count
-//                        tweet.favorite_count = item.favorite_count
-//
-//
-//
-//                        termArr["name"] = item.name
-//                        termArr["screen_name"] = "@" + item.screen_name
-//                        termArr["text"] = item.text
-//                        termArr["profile_image_url"] = item.profile_image_url
-//                        termArr["tweetId"] = item.tweetId
-//                        termArr["isLiked"] = item.isLiked
-//                        termArr["isRetweeted"] = item.isRetweeted
-//                        if let mediaUrl = item.media_url {
-//                            termArr["url"] = mediaUrl[0].media_url!
-//                        }
-//                        termArr["favorite_count"] = item.favorite_count
-//                        termArr["retweet_count"] = item.retweet_count
-////
-//                        self.tweetsData.append(termArr)
-//                        self.tweetsData1.append(tweet)
-//                    }
-                    
-//                    print(self.tweetsData1)
-                    completion(models)
+                    if let data = data {
+                        let models: [TweetData] = try unbox(data: data)
+                        completion(models)
+                    } else {
+                        //error
+                    }
                 } catch let jsonError as NSError {
                     print("json error: \(jsonError.localizedDescription)")
                 }
@@ -96,7 +61,6 @@ class TwitterRestApi: UIViewController {
             }
         }
     }
-    
     
     func postIMG(image: Data?, completion: @escaping (String?) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {

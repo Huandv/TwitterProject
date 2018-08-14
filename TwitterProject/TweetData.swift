@@ -16,8 +16,8 @@ struct TweetData {
     var text: String
     var profile_image_url: String
     var tweetId: String
-    var isLiked: String
-    var isRetweeted: String
+    var isLiked: Int
+    var isRetweeted: Int
     var media_url: [Media]?
     var retweet_count : Int
     var favorite_count : Int
@@ -46,15 +46,14 @@ struct Media: Unboxable {
     }
 }
 
-
 struct UserInformation {
     let name : String
     let screen_name : String
     let profile_image_url : String
     let profile_banner_url : String
     let location : String
-    let friends_count: String
-    let followers_count: String
+    let friends_count: Int
+    let followers_count: Int
 }
 
 extension UserInformation : Unboxable {
@@ -66,7 +65,6 @@ extension UserInformation : Unboxable {
         location = try unboxer.unbox(key: "location")
         friends_count = try unboxer.unbox(key: "friends_count")
         followers_count = try unboxer.unbox(key: "followers_count")
-        
     }
 }
 

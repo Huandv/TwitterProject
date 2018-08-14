@@ -227,7 +227,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell1" rowHeight="227" id="u0O-R3-37t" customClass="TableViewCell" customModule="TwitterProject" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell1" rowHeight="227" id="u0O-R3-37t" customClass="UserTableViewCell" customModule="TwitterProject" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="55.5" width="375" height="227"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="u0O-R3-37t" id="DsL-LA-SMC">
@@ -264,7 +264,7 @@
                                                         <color key="titleColor" red="0.2325311865977252" green="0.21602296846643804" blue="0.27095891497461932" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="onTapLikeBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="dTp-ab-2H3"/>
+                                                        <action selector="onTapLikeBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="BDd-Sx-bNX"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="screenname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GjT-fq-2pm">
@@ -287,7 +287,7 @@
                                                         <color key="titleColor" red="0.14072619818652854" green="0.10126207598971818" blue="0.054445232740440226" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="onTapBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="HAl-ij-1xz"/>
+                                                        <action selector="onTapBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="Heu-Q4-PB0"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NKp-gJ-6Sb">
@@ -302,7 +302,7 @@
                                                         <color key="titleColor" red="0.20247139807834871" green="0.20546969173690321" blue="0.2594384517766497" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="onTapRetweetBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="WgI-Z3-1M6"/>
+                                                        <action selector="onTapRetweetBtn:" destination="u0O-R3-37t" eventType="touchUpInside" id="YmB-xx-t9J"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -316,6 +316,7 @@
                                                 <constraint firstItem="NKp-gJ-6Sb" firstAttribute="leading" secondItem="19f-uM-fmO" secondAttribute="trailing" constant="5" id="S9c-ox-CTN"/>
                                                 <constraint firstItem="oKy-b8-d2P" firstAttribute="top" secondItem="Ol4-Sa-JdZ" secondAttribute="top" id="Ted-n0-NGe"/>
                                                 <constraint firstAttribute="trailing" secondItem="sbR-5L-gG7" secondAttribute="trailing" constant="20" id="Xz2-dY-M0h"/>
+                                                <constraint firstAttribute="bottom" secondItem="19f-uM-fmO" secondAttribute="bottom" constant="7.5" id="g8C-BQ-WUD"/>
                                                 <constraint firstItem="Ol4-Sa-JdZ" firstAttribute="top" secondItem="DsL-LA-SMC" secondAttribute="topMargin" constant="5" id="hJI-gM-0UR"/>
                                                 <constraint firstItem="Ol4-Sa-JdZ" firstAttribute="leading" secondItem="DsL-LA-SMC" secondAttribute="leadingMargin" constant="5" id="hur-er-CY8"/>
                                                 <constraint firstItem="bFI-DH-xRh" firstAttribute="centerY" secondItem="GjT-fq-2pm" secondAttribute="centerY" id="nbj-fE-qgH"/>
@@ -329,14 +330,14 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="likeUserButton" destination="19f-uM-fmO" id="drd-dw-Itg"/>
-                                            <outlet property="retweetUserButton" destination="NKp-gJ-6Sb" id="ea0-ty-Z3E"/>
-                                            <outlet property="userImgHeightLayoutConstraint" destination="40V-pA-i33" id="o4j-U5-1Ab"/>
-                                            <outlet property="userImgView" destination="uet-Zo-Q9E" id="v28-zj-NHC"/>
-                                            <outlet property="userProfileImageView" destination="Ol4-Sa-JdZ" id="4n3-vV-Q7v"/>
-                                            <outlet property="usernameLabel" destination="oKy-b8-d2P" id="I90-3f-k9E"/>
-                                            <outlet property="userscNameLabel" destination="GjT-fq-2pm" id="Goo-q1-0pY"/>
-                                            <outlet property="usertweetsLabel" destination="sbR-5L-gG7" id="wNJ-Bq-yq7"/>
+                                            <outlet property="userImageView" destination="uet-Zo-Q9E" id="fZr-qV-H70"/>
+                                            <outlet property="userImgHeightLayoutConstraint" destination="40V-pA-i33" id="L8Q-ue-D6q"/>
+                                            <outlet property="userLikeButton" destination="19f-uM-fmO" id="C3q-1Z-DAv"/>
+                                            <outlet property="userProfileImageView" destination="Ol4-Sa-JdZ" id="45d-5i-r8r"/>
+                                            <outlet property="userRetweetButton" destination="NKp-gJ-6Sb" id="nGO-09-75U"/>
+                                            <outlet property="usernameLabel" destination="oKy-b8-d2P" id="4cT-hI-OYA"/>
+                                            <outlet property="userscreennameLabel" destination="GjT-fq-2pm" id="G0Q-v6-vCQ"/>
+                                            <outlet property="usertweetsLabel" destination="sbR-5L-gG7" id="DGy-kU-l8Z"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
