@@ -113,7 +113,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMs-3r-dIA">
                                                     <rect key="frame" x="70" y="205" width="87" height="15"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="87" id="6y0-MP-5W7"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="87" id="6y0-MP-5W7"/>
                                                         <constraint firstAttribute="height" constant="15" id="wEV-Pj-f3l"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -129,7 +129,7 @@
                                                     <rect key="frame" x="162" y="202" width="87" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="E9A-su-pIc"/>
-                                                        <constraint firstAttribute="width" constant="87" id="Iss-vw-Efp"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="87" id="Iss-vw-Efp"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -142,6 +142,7 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="1sE-hf-0h5" secondAttribute="trailing" constant="20" symbolic="YES" id="4cz-9P-MRW"/>
                                                 <constraint firstItem="1sE-hf-0h5" firstAttribute="leading" secondItem="OMs-3r-dIA" secondAttribute="trailing" constant="5" id="Bt5-yA-icw"/>
                                                 <constraint firstItem="LuK-y0-LBs" firstAttribute="trailing" secondItem="9iA-13-0WE" secondAttribute="trailing" id="GJ9-MR-Prd"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="OMs-3r-dIA" secondAttribute="bottom" constant="9" id="M1c-5e-zxR"/>
@@ -189,7 +190,7 @@
                         <viewLayoutGuide key="safeArea" id="1b9-sM-kNQ"/>
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="nYu-nq-0MB">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" image="logout" style="done" id="6MX-pl-kYK">
+                        <barButtonItem key="leftBarButtonItem" image="logout" style="done" id="6MX-pl-kYK">
                             <connections>
                                 <action selector="logout:" destination="tLh-HC-LzD" id="d3G-t8-cWD"/>
                             </connections>
@@ -256,7 +257,7 @@
                                                     <rect key="frame" x="70" y="204" width="87" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="WRt-Nw-8lr"/>
-                                                        <constraint firstAttribute="width" constant="87" id="dem-eT-d23"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="87" id="dem-eT-d23"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -294,7 +295,7 @@
                                                     <rect key="frame" x="162" y="201" width="87" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="IBn-Xh-vvO"/>
-                                                        <constraint firstAttribute="width" constant="87" id="SK9-iw-aIk"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="87" id="SK9-iw-aIk"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="-1" maxY="0.0"/>
@@ -327,6 +328,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="uet-Zo-Q9E" secondAttribute="trailing" constant="20" id="udU-4N-IBM"/>
                                                 <constraint firstItem="sbR-5L-gG7" firstAttribute="leading" secondItem="oKy-b8-d2P" secondAttribute="leading" id="wek-g7-Tuf"/>
                                                 <constraint firstItem="NKp-gJ-6Sb" firstAttribute="centerY" secondItem="19f-uM-fmO" secondAttribute="centerY" id="yz7-Tn-7W7"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NKp-gJ-6Sb" secondAttribute="trailing" constant="20" symbolic="YES" id="zxJ-8I-TtR"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>

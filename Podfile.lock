@@ -18,7 +18,7 @@ DEPENDENCIES:
   - AlamofireImage (~> 3.3)
   - NVActivityIndicatorView
   - SDWebImage (~> 4.0)
-  - TwitterKit
+  - TwitterKit (~> 3.3.0)
   - Unbox
 
 SPEC REPOS:
@@ -40,6 +40,6 @@ SPEC CHECKSUMS:
   TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
   Unbox: 9ed33b2a31f7a8a049f54b94d40c4a52a28c4d9d
 
-PODFILE CHECKSUM: 1a57d558e704d48df048078f6e978bd181172561
+PODFILE CHECKSUM: 6dbbed00cbda8d40fa429a6fa9a975a485f08e3b
 
 COCOAPODS: 1.5.3

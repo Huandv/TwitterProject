@@ -16,7 +16,7 @@ class TwitterRestApi: UIViewController {
     func getFeed(requestUrl: String, completion: @escaping ([TweetData]) -> () ) {
         if let userID = TWTRTwitter.sharedInstance().sessionStore.session()?.userID {            
             let client = TWTRAPIClient(userID: userID)
-            let params = ["user_id": userID, "count": "20", "include_rts" : "false"]
+            let params = ["user_id": userID, "count": "100", "include_rts" : "false"]
             var clientError : NSError?
             
             let request = client.urlRequest(withMethod: "GET", urlString: requestUrl, parameters: params, error: &clientError)
