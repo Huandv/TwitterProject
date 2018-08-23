@@ -23,7 +23,8 @@ class ViewController: TwitterRestApi {
             guard let myVC = self.storyboard?.instantiateViewController(withIdentifier: "home") else { return }
             let navController = UINavigationController(rootViewController: myVC)
             self.present(navController, animated: false, completion: nil)
-        } else {
+            print(1) 
+      } else {
             login()
         }
     }
